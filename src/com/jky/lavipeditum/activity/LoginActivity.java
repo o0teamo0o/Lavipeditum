@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 去注册
 		case R.id.tv_go_register:
 			if (!showRegister) {
-				applyRotation(0, 90);
+				applyRotation(0, -90);
 				showRegister = true;
 			}
 			break;

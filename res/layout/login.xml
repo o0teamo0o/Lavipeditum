@@ -207,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20.0dip"
-                android:text="无需注册,直接使用合作账号一键登陆"
+                android:text="无需注册,直接使用合作账号一键登录"
                 android:textColor="@color/main_color"
                 android:textSize="15.0sp" />
 

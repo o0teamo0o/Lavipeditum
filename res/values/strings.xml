@@ -7,14 +7,14 @@
     <string name="city_name">长沙</string>
     <string name="left_menu_explain">打开左边菜单</string>
     <string name="search_hint">输入店铺,地名</string>
-    <string name="main_home">主页</string>
+    <string name="main_home">主页</string> 
     <string name="main_hereabout">附近</string>
     <string name="main_my">我的</string>
     <string name="main_setting">设置</string>
-    <string name="logint_title_hint">登 陆</string>
+    <string name="logint_title_hint">登 录</string>
     <string name="regihter_hint">注册</string>
     <string name="regihter_title_hint">注 册</string>
-    <string name="login_hint">登陆</string>
+    <string name="login_hint">登录</string>
     <string name="username_hint">请输入手机号码</string>
     <string name="username">手机号码</string>
     <string name="password_hint">请输入密码</string>

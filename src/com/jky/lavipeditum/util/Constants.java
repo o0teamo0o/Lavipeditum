@@ -20,8 +20,13 @@ public class Constants {
 	public static final int LOGIN_RETURN_RESULTCODE = 11;  //登陆返回信息
 	public static final int LOGIN_BACK_RESULTCOCE = -1; //在登陆界面按返回的返回值
 	
-	public static final int HOME_PAGER = 3;
-	public static final int HEREABOUT_PAGER = 2;
-	public static final int MY_PAGER = 1;
-	public static final int SETTING_PAGER = 0;
+	//主界面的四个页面
+	public static final int HOME_PAGER = 3; //主页
+	public static final int HEREABOUT_PAGER = 2; //附近
+	public static final int MY_PAGER = 1; //我的
+	public static final int SETTING_PAGER = 0; //设置
+	
+	public static final String SMS_APPKEY = "3f9aec45c4d9"; //短信验证SDK Appkey
+	public static final String SMS_APP_SECRET = "7eddda429188e467a7d17b5d85c246a3"; //短信验证SDK App Secret
+	
 }
