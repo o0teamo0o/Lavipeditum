@@ -1,4 +1,4 @@
-package com.jky.lavipeditum.adapter;
+package com.jky.lavipeditum.base;
 
 import java.util.List;
 
@@ -8,24 +8,23 @@ import android.view.ViewGroup;
 
 /**
  * 
- * @ClassName: TitleAdAdapter 
- * @Description: 首页头部广告的适配器
+ * @ClassName: BasePagerAdapter
+ * @Description: 最基础的PagerAdapter
  *
  * @author o0teamo0o
- * @date 2014年10月24日 上午12:07:20 
- *
+ * @date 2014年10月26日 下午5:38:39
  */
-public class TitleAdAdapter extends PagerAdapter {
+public class BasePagerAdapter extends PagerAdapter {
 
-	private List<View> ads;
+	private List<View> views;
 	
-	public TitleAdAdapter(List<View> ads) {
-		this.ads = ads;
+	public BasePagerAdapter(List<View> views) {
+		this.views = views;
 	}
-
+	
 	@Override
 	public int getCount() {
-		return ads.size();
+		return views.size();
 	}
 
 	@Override
@@ -35,13 +34,12 @@ public class TitleAdAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		container.removeView(ads.get(position));
+		container.removeView(views.get(position));
 	}
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		container.addView(ads.get(position));
-		return ads.get(position);
+		container.addView(views.get(position));
+		return views.get(position);
 	}
-
 }

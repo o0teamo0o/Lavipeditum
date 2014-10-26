@@ -41,5 +41,20 @@
         <attr name="selectorEnabled" format="boolean" />
         <attr name="selectorDrawable" format="reference" />
     </declare-styleable>
+    
+    
+    <declare-styleable name="BootstrapButton">
+        <attr name="bb_type" format="string"/>
+        <attr name="bb_icon_left" format="string"/>
+        <attr name="bb_icon_right" format="string"/>
+        <attr name="bb_roundedCorners" format="boolean"/>
+        <attr name="bb_text_alignment" format="string"/>
+        <attr name="bb_size" format="string"/>
+        <attr name="bb_text_gravity" format="string"/>
+        <attr name="android:textSize"/>
+        <attr name="android:text"/>
+        <attr name="android:enabled"/>
+		<attr name="android:layout_width"/>
+    </declare-styleable>
 
 </resources>

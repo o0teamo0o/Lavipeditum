@@ -20,7 +20,7 @@ import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.activity.LoginActivity;
 import com.jky.lavipeditum.adapter.MainFrameAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
-import com.jky.lavipeditum.custom_vIew.CustomViewPager;
+import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.Logger;
 

@@ -16,5 +16,16 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
+    
+    <!-- 最基础的布局 -->
+    <style name="base_layout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <!-- 登录注册editView布局样式 -->
+    <style name="login_editview" parent="base_layout">
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
 </resources>

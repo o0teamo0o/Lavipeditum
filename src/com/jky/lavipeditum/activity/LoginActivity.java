@@ -1,21 +1,27 @@
 package com.jky.lavipeditum.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Animation.AnimationListener;
-import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseActivity;
+import com.jky.lavipeditum.base.BasePagerAdapter;
 import com.jky.lavipeditum.custom.Rotate3dAnimation;
+import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.util.Constants;
 
 /**
@@ -34,6 +40,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private ViewGroup container; // FrameLayout容器,用来3D翻转需要的使用的数据
 	private LinearLayout ll_register, ll_login;
 	private TextView tv_go_login;
+	private CustomViewPager cvp_register;
 
 	@Override
 	protected void initView(Bundle savedInstanceState) {
@@ -44,11 +51,34 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		ll_register = (LinearLayout) this.findViewById(R.id.ll_register);
 		ll_login = (LinearLayout) this.findViewById(R.id.ll_login);
 		tv_go_login = (TextView) this.findViewById(R.id.tv_go_login);
+		
+		cvp_register = (CustomViewPager) this.findViewById(R.id.cvp_register);
 	}
 
 	@Override
 	protected void initData() {
-
+		List<View> pagers = initRegisterPager();
+		
+		BasePagerAdapter adapter = new BasePagerAdapter(pagers);
+		cvp_register.setAdapter(adapter);
+	}
+	
+	/**
+	 * 
+	 * @Title: initRegisterPager
+	 * @Description: 初始化注册页面
+	 * @param 
+	 * @return void
+	 * @throws
+	 */
+	private List<View> initRegisterPager() {
+		List<View> pagers = new ArrayList<View>();
+		View inputPager = View.inflate(context, R.layout.register_input_pager, null);
+		pagers.add(inputPager);
+		
+		View verificationPager = View.inflate(context, R.layout.register_verification_pager, null);
+		pagers.add(verificationPager);
+		return pagers;
 	}
 
 	@Override

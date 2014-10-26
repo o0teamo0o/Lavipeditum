@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:background="@drawable/wb_personal_item_full_normal"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <com.jky.lavipeditum.custom_view.ClearEditText
+                android:id="@+id/cd_user"
+                android:layout_width="@dimen/login_editview_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@null"
+                android:hint="@string/username_regihter_hint"
+                android:inputType="text"
+                android:lines="1"
+                android:textColor="@color/main_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iv_line"
+                style="@style/login_editview"
+                android:layout_toLeftOf="@id/cd_user"
+                android:layout_toStartOf="@id/cd_user"
+                android:contentDescription="@null"
+                android:src="@drawable/wb_infolist_tab_divider_small_version" />
+
+            <TextView
+                style="@style/login_editview"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_line"
+                android:layout_toStartOf="@id/iv_line"
+                android:text="验证码"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.jky.lavipeditum.custom_view.BootstrapButton
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:text="验证并登陆"
+        android:textSize="16sp"
+        bootstrapbutton:bb_icon_left="fa-chevron-circle-right"
+        bootstrapbutton:bb_icon_right="fa-chevron-circle-left"
+        bootstrapbutton:bb_roundedCorners="true"
+        bootstrapbutton:bb_size="default"
+        bootstrapbutton:bb_text_gravity="center"
+        bootstrapbutton:bb_type="primary" />
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20.0dip"
+        android:text="无需注册,直接使用合作账号一键登陆"
+        android:textColor="@color/main_color"
+        android:textSize="15.0sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.0dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:clickable="true"
+            android:drawablePadding="5dip"
+            android:drawableTop="@drawable/weibo_icon"
+            android:gravity="center_horizontal"
+            android:text="微博"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/qq_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:drawablePadding="5dip"
+            android:drawableTop="@drawable/tencent_icon"
+            android:gravity="center_horizontal"
+            android:text="QQ"
+            android:textColor="@android:color/darker_gray" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.jky.lavipeditum.custom_vIew.CustomViewPager
+    <com.jky.lavipeditum.custom_view.CustomViewPager
         android:id="@+id/cvp_main_group"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content" />
 
     <RadioGroup
         android:id="@+id/rg_mainfragment_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_hotel_filter_bottom"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true" >
 
         <RadioButton
             android:id="@+id/rb_setting"
@@ -79,4 +79,4 @@
             android:textSize="14sp" />
     </RadioGroup>
 
-</LinearLayout>
+</RelativeLayout>
