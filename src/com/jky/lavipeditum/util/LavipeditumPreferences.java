@@ -19,4 +19,5 @@ public class LavipeditumPreferences {
 	public LavipeditumPreferences(Context context) {
 		preferences = context.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE);
 	}
+	
 }

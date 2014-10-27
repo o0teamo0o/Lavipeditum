@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 
+import com.jky.lavipeditum.util.AccessTokenKeeper;
 import com.jky.lavipeditum.util.LavipeditumPreferences;
 
 /**
@@ -18,18 +19,21 @@ import com.jky.lavipeditum.util.LavipeditumPreferences;
  */
 public abstract class BaseActivity extends Activity {
 
-	public LavipeditumPreferences preferences; //共享首选项
+	public LavipeditumPreferences preferences; //全局共享首选项
 	public Context context;  //上下文
+	public AccessTokenKeeper tokenKeeper; //微博共享首选项
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//去除标题
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		//得到共享首选项
+		//得到全局共享首选项
 		preferences = new LavipeditumPreferences(this);
 		//初始化上下文
 		context = getApplicationContext();
+		//操作weibo共享首选项
+		tokenKeeper = new AccessTokenKeeper(this);
 		
 		initView(savedInstanceState);
 		initData();
