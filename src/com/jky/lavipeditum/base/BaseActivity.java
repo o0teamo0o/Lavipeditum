@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.jky.lavipeditum.util.AccessTokenKeeper;
+import com.jky.lavipeditum.util.WeiboAccessTokenKeeper;
 import com.jky.lavipeditum.util.LavipeditumPreferences;
 
 /**
@@ -21,7 +21,7 @@ public abstract class BaseActivity extends Activity {
 
 	public LavipeditumPreferences preferences; //全局共享首选项
 	public Context context;  //上下文
-	public AccessTokenKeeper tokenKeeper; //微博共享首选项
+	public WeiboAccessTokenKeeper tokenKeeper; //微博共享首选项
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public abstract class BaseActivity extends Activity {
 		//初始化上下文
 		context = getApplicationContext();
 		//操作weibo共享首选项
-		tokenKeeper = new AccessTokenKeeper(this);
+		tokenKeeper = new WeiboAccessTokenKeeper(this);
 		
 		initView(savedInstanceState);
 		initData();
@@ -43,7 +43,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * 
 	 * @Title: initView 
-	 * @Description: 初始化试图方法
+	 * @Description: 初始化视图
 	 * @param savedInstanceState
 	 */
 	protected abstract void initView(Bundle savedInstanceState);

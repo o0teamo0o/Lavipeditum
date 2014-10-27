@@ -1,16 +1,22 @@
 package com.jky.lavipeditum.activity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.http.RequestLine;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
-import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,19 +25,18 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseActivity;
 import com.jky.lavipeditum.base.BasePagerAdapter;
 import com.jky.lavipeditum.custom.Rotate3dAnimation;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
+import com.jky.lavipeditum.lib.tencent.BaseUIListener;
 import com.jky.lavipeditum.lib.weibo.openapi.models.User;
-import com.jky.lavipeditum.util.AccessTokenKeeper;
 import com.jky.lavipeditum.util.Constants;
+import com.jky.lavipeditum.util.ImageUtils;
 import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.ToastUtil;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -42,12 +47,16 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.AsyncWeiboRunner;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.net.WeiboParameters;
-import com.sina.weibo.sdk.utils.LogUtil;
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.auth.QQToken;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
 /**
  * 
  * @ClassName: LoginActivity
- * @Description: 登陆的界面
+ * @Description: 登陆的界面 
  *
  * @author o0teamo0o
  * @date 2014年10月28日 上午11:22:30
@@ -61,10 +70,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private LinearLayout ll_register, ll_login;
 	private TextView tv_go_login;
 	private CustomViewPager cvp_register;
-	private TextView tv_login_weibo;
+	private TextView tv_login_weibo, tv_qq_login; //微博,QQ登陆按钮
 	private WeiboAuth weiboAuth; //微博 Web 授权类，提供登陆等功能
 	private SsoHandler ssoHandler; //注意：SsoHandler 仅当 SDK 支持 SSO 时有效
 	private Oauth2AccessToken accessToken; //装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
+	private Tencent tencent; //Tencent类是SDK的主要实现类
 	
     
 	
@@ -78,6 +88,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		ll_login = (LinearLayout) this.findViewById(R.id.ll_login);
 		tv_go_login = (TextView) this.findViewById(R.id.tv_go_login);
 		tv_login_weibo = (TextView) this.findViewById(R.id.tv_login_weibo);
+		tv_qq_login = (TextView) this.findViewById(R.id.tv_qq_login);
 		
 		cvp_register = (CustomViewPager) this.findViewById(R.id.cvp_register);
 	}
@@ -95,6 +106,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_go_register.setOnClickListener(this);
 		tv_go_login.setOnClickListener(this);
 		tv_login_weibo.setOnClickListener(this);
+		tv_qq_login.setOnClickListener(this);
 	}
 	
 	/**
@@ -135,7 +147,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		//微博登陆
 		case R.id.tv_login_weibo:
 			//创建微博授权授权认证信息对象
-			weiboAuth = new WeiboAuth(LoginActivity.this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
+			weiboAuth = new WeiboAuth(LoginActivity.this, Constants.WEIBO_APP_KEY, Constants.WEIBO_REDIRECT_URL, Constants.WEIBO_SCOPE);
 			
 			/**
 			 * SSO授权
@@ -147,9 +159,244 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			//调用 SsoHandler#authorize 方法
 			ssoHandler.authorize(new AuthListener());
 			break;
+		//腾讯登陆
+		case R.id.tv_qq_login: 
+			// Tencent类是SDK的主要实现类，开发者可通过Tencent类访问腾讯开放的OpenAPI。
+			// 1.4版本:此处需新增参数，传入应用程序的全局context，可通过activity的getApplicationContext方法获取
+			tencent = Tencent.createInstance(Constants.TENCENT_APP_ID, LoginActivity.this);
+			
+			//跳转登陆页面
+			onClickLogin();
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: onClickLogin
+	 * @Description: 跳转到腾讯登陆页面
+	 */
+	private void onClickLogin() {
+		if (!tencent.isSessionValid()) {
+			tencent.login(this, "all", loginListener);
+		}else{
+			tencent.logout(this);
 		}
 	}
 	
+	/**
+	 * 腾讯登陆接口实现类
+	 */
+	IUiListener loginListener = new BaseUiListener(){
+
+		@Override
+		protected void doComplete(JSONObject values) {
+			super.doComplete(values);
+			initOpenidAndToken(values);
+			//更新用户信息,得到用户头像
+			updateUserInfo();
+		}
+		
+	};
+	
+	/**
+	 * 
+	 * @Title: initOpenidAndToken
+	 * @Description: 处理服务器返回的json格式
+	 * @param values json格式数据
+	 */
+	protected void initOpenidAndToken(JSONObject jsonObject) {
+		try {
+			String token = jsonObject.getString(Constants.TENCENT_PARAM_ACCESS_TOKEN);
+			String expires = jsonObject.getString(Constants.TENCENT_PARAM_EXPIRES_IN);
+			String openId = jsonObject.getString(Constants.TENCENT_PARAM_OPEN_ID);
+			if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
+				tencent.setAccessToken(token, expires);
+				tencent.setOpenId(openId);
+				
+				//获取用户具体信息
+				getTencentUserInfo(tencent);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 * @Title: getTencentUserInfo
+	 * @Description: 获取腾讯用户信息
+	 * @param tencent2
+	 */
+	private void getTencentUserInfo(Tencent tencent) {
+		if (tencent == null) {
+			ToastUtil.showMessage(context, "tencent为空,无法获取用户信息!");
+			return;
+		}
+		boolean ready = tencent.isSessionValid() && tencent.getQQToken().getOpenId() != null;
+		if (ready) {
+			UserInfo tencentUserInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
+			tencentUserInfo.getUserInfo(new BaseUIListener(this, "get_simple_userinfo"));
+		}else{
+			ToastUtil.showMessage(context, "参数状态异常,无法读取用户信息!");
+		}
+		
+	}
+
+	/**
+	 * 
+	 * @Title: updateUserInfo
+	 * @Description: 更新用户信息,得到用户头像等...
+	 */
+	protected void updateUserInfo() {
+		if (tencent != null && tencent.isSessionValid()) {
+			IUiListener listener = new IUiListener() {
+				
+				/**
+				 * 从服务器获取用户信息数据失败的回调
+				 */
+				@Override
+				public void onError(UiError e) {
+					ToastUtil.showMessage(context, e.errorDetail);
+				}
+				
+				/**
+				 * 从服务器获取数据成功的回调
+				 */
+				@Override
+				public void onComplete(final Object response) {
+					
+					/**
+					 * 因为需要联网,所以需要开启线程
+					 */
+					new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							JSONObject jsonObject = (JSONObject) response;
+							if (jsonObject.has("figureurl")) {
+								Bitmap bitmap = null;
+								try {
+									//从服务器获取头像
+									bitmap = ImageUtils.getbitmap(jsonObject.getString("figureurl_qq_2"));
+									//保存到SDCard本地
+									if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+										File file = new File(Environment.getExternalStorageDirectory(), "head.jpg");
+										saveBitmapLocation(bitmap, file);
+									}else{
+										ToastUtil.showMessage(context, "SDCard不可用!");
+										//如果SDCard不可用,我们把图片存放到缓冲目录
+										File dir = LoginActivity.this.getCacheDir();
+										if (dir.exists()) {
+											dir.mkdirs();
+										}
+										File file = new File(dir, "head.jpg");
+										saveBitmapLocation(bitmap, file);
+									}
+									
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}
+						
+						/**
+						 * 
+						 * @Title: saveBitmapLocation
+						 * @Description: 把图片保存到本地
+						 * @param bitmap 位图
+						 * @param file 保存的文件
+						 * @throws FileNotFoundException
+						 */
+						private void saveBitmapLocation(Bitmap bitmap, File file)
+								throws FileNotFoundException {
+							FileOutputStream fos = new FileOutputStream(file);
+							if (bitmap.compress(CompressFormat.JPEG, 100, fos)) {
+								Logger.d(LoginActivity.class, "头像保存到SDCard成功!");
+							}
+						}
+					}).start();
+				}
+				
+				/**
+				 * 取消获取用户信息的回调
+				 */
+				@Override
+				public void onCancel() {
+					ToastUtil.showMessage(context, "取消后去用户信息!");
+				}
+			};
+		}
+	}
+	
+	/**
+	 * 
+	 * @ClassName: BaseUiListener
+	 * @Description: 登陆的回调监听
+	 *
+	 * @author o0teamo0o
+	 * @date 2014年10月27日 下午9:21:30
+	 */
+	private class BaseUiListener implements IUiListener{
+
+		/**
+		 * 
+		 * @Title: onCancel
+		 * @Description: 登陆取消的回调
+		 */
+		@Override
+		public void onCancel() {
+			ToastUtil.showMessage(context, "登陆被取消");
+		}
+
+		/**
+		 * 
+		 * @Title: onComplete
+		 * @Description: 登陆成功的回调
+		 * @param response
+		 */
+		@Override
+		public void onComplete(Object response) {
+			//判断服务器返回的数据是否为空
+			if (null == response) {
+				ToastUtil.showMessage(context, "返回为空,登陆失败!");
+				return;
+			}
+			
+			//解析服务器返回的json数据 把结合强转换成JSONObject对象
+			JSONObject jsonObject = (JSONObject) response;
+			if (null != jsonObject && jsonObject.length() == 0) {
+				ToastUtil.showMessage(context, "返回为空,登陆失败!");
+				return ;
+			}
+			//打印服务器返回的数据
+			Logger.d(LoginActivity.class, response.toString());
+			doComplete((JSONObject)response);
+		}
+		
+		/**
+		 * 
+		 * @Title: doComplete
+		 * @Description: 登陆完成之后得到的json 可以进行处理, 目的是把数据返回给调用者
+		 * @param values 服务器得到的json数据
+		 */
+		protected void doComplete(JSONObject values) {
+
+		}
+
+		/**
+		 * 
+		 * @Title: onError
+		 * @Description: 登陆错误的回调
+		 * @param e 异常
+		 */
+		@Override
+		public void onError(UiError e) {
+			ToastUtil.showMessage(context, e.errorDetail);
+		}
+		
+	}
+
 	/**
 	 * 
 	 * @ClassName: AuthListener
@@ -190,7 +437,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				ToastUtil.showMessage(context, "授权成功");
 				
 				//得到用户信息
-				getUserInfo(accessToken.getUid());
+				getWeiboUserInfo(accessToken.getUid());
 			}else{
 				// 以下几种情况，您会收到 Code：
                 // 1. 当您未在平台上注册的应用程序的包名与签名时；
@@ -206,7 +453,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 		
 		/**
-		 * 登陆异常时回调
+		 * 微博登陆异常时回调
 		 */
 		@Override
 		public void onWeiboException(WeiboException e) {
@@ -227,17 +474,31 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		if (ssoHandler != null) {
 			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 		}
+		
+		//微博授权登陆
+		if (requestCode == Constants.TENCENT_REQUEST_API) {
+			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
+				tencent.handleLoginData(data, loginListener);
+				Logger.d(LoginActivity.class, "onActivityResult handle logindata");
+			}
+		}
+		//app内应用登陆
+		else if (requestCode == Constants.TENCENT_REQUEST_APPBAR) {
+			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
+				updateUserInfo();
+			}
+		}
 	}
 
 	/**
 	 * 
-	 * @Title: getUserInfo
-	 * @Description: 通过SSO得到的accessToken 查询用户信息
+	 * @Title: getWeiboUserInfo
+	 * @Description: 通过微博SSO得到的accessToken 查询用户信息
 	 */
-	public void getUserInfo(String uid) {
+	public void getWeiboUserInfo(String uid) {
 		WeiboParameters parameters = new WeiboParameters();
 		parameters.put("uid", uid);
-		requestAsync(Constants.SAPILIST.get(Constants.READ_USER), parameters, Constants.HTTPMETHOD_GET, requestListener);
+		requestAsync(Constants.SAPILIST.get(Constants.WEIBO_READ_USER), parameters, Constants.WEIBO_HTTPMETHOD_GET, requestListener);
 	}
 	
 	/**
@@ -288,7 +549,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			return ;
 		}
 		
-		params.put(Constants.KEY_ACCESS_TOKEN, accessToken.getToken());
+		params.put(Constants.WEIBO_KEY_ACCESS_TOKEN, accessToken.getToken());
 		//异步请求数据 回调的数据会在监听里面
 		AsyncWeiboRunner.requestAsync(url, params, httpMethod, listener);
 	}

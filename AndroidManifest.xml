@@ -13,6 +13,9 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	
+	<!-- 腾讯SDK使用的权限 -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -30,8 +33,32 @@
             </intent-filter>
         </activity>
         
-        <!-- 登陆的activity -->
+        <!-- 腾讯SDK使用的activity -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 这里填写你申请到的APP_ID -->
+                <data android:scheme="1103408492" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 腾讯SDK使用的activity -->
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
+        
+		<!-- 登陆的activity -->
         <activity android:name="com.jky.lavipeditum.activity.LoginActivity" />
+        
     </application>
 
 </manifest>

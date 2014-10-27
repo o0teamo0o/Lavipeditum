@@ -231,7 +231,7 @@
                     android:textColor="@android:color/darker_gray" />
 
                 <TextView
-                    android:id="@+id/qq_login"
+                    android:id="@+id/tv_qq_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dip"
