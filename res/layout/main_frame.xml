@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.jky.lavipeditum.custom_vIew.CustomViewPager
+        android:id="@+id/cvp_main_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/rg_mainfragment_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_hotel_filter_bottom"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|bottom"
+            android:layout_weight="1"
+            android:background="@drawable/main_frame_bottom_bg"
+            android:button="@null"
+            android:drawableTop="@drawable/main_frame_bottom_setting"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="@string/main_setting"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_my"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|bottom"
+            android:layout_weight="1"
+            android:background="@drawable/main_frame_bottom_bg"
+            android:button="@null"
+            android:drawableTop="@drawable/main_frame_bottom_my"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="@string/main_my"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_hereabout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/main_frame_bottom_bg"
+            android:button="@null"
+            android:drawableTop="@drawable/main_frame_bottom_hereabout"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/main_hereabout"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|bottom"
+            android:layout_weight="1"
+            android:background="@drawable/main_frame_bottom_bg"
+            android:button="@null"
+            android:drawableTop="@drawable/main_frame_bottom_home"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:checked="true"
+            android:text="@string/main_home"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+</LinearLayout>

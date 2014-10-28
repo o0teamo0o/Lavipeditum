@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_color" >
+
+        <ImageView
+            android:id="@+id/lv_left_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:contentDescription="@string/left_menu_explain"
+            android:padding="8dp"
+            android:src="@drawable/open_left_menu" />
+
+        <CheckBox
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/lv_left_menu"
+            android:layout_toRightOf="@id/lv_left_menu"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/city_change"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/city_change"
+            android:padding="5dp"
+            android:text="@string/city_name"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_saoyisao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/saoyisao" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@id/city"
+            android:layout_toLeftOf="@id/iv_saoyisao"
+            android:layout_toRightOf="@id/city"
+            android:background="@drawable/ic_album_amount_background"
+            android:drawableLeft="@drawable/ic_global_search_textbox_white_normal"
+            android:drawablePadding="5dp"
+            android:hint="@string/search_hint"
+            android:paddingLeft="5dp"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_ad_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager
+            android:id="@+id/auto_viewPager"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="bottom|right"
+            android:padding="10dp"
+            android:layout_margin="10dp" />
+    </FrameLayout>
+
+</LinearLayout>
