@@ -3,20 +3,26 @@ package com.jky.lavipeditum.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
+import android.net.VpnService;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.jky.lavipeditum.LavipeditumApplication;
 import com.jky.lavipeditum.R;
+import com.jky.lavipeditum.activity.LoginActivity;
 import com.jky.lavipeditum.adapter.MainFrameAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.custom_vIew.CustomViewPager;
+import com.jky.lavipeditum.util.Constants;
+import com.jky.lavipeditum.util.Logger;
 
 /**
  * 
@@ -48,6 +54,8 @@ public class MainFragment extends BaseFragment{
 		List<Fragment> mainFragments = initMainFrameData();
 		MainFrameAdapter adapter = new MainFrameAdapter(getChildFragmentManager(), mainFragments);
 		cvp_main_group.setAdapter(adapter);
+		//默认显示第主页
+		cvp_main_group.setCurrentItem(Constants.HOME_PAGER);
 	}
 
 	@Override
@@ -61,29 +69,45 @@ public class MainFragment extends BaseFragment{
 				switch (checkedId) {
 				//主页
 				case R.id.rb_home:
-					cvp_main_group.setCurrentItem(0, false);
+					cvp_main_group.setCurrentItem(Constants.HOME_PAGER, false);
 					break;
 				//附近
 				case R.id.rb_hereabout:
-					cvp_main_group.setCurrentItem(1, false);
+					cvp_main_group.setCurrentItem(Constants.HEREABOUT_PAGER, false);
 					break;
 				//我的
 				case R.id.rb_my:
 					//判断是否登陆， 如果没有登陆应该先进入登陆界面
 					if (LavipeditumApplication.isLogin) {
-						cvp_main_group.setCurrentItem(2, false);
+						cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
 					}else{
-						cvp_main_group.setCurrentItem(4, false); 
-					}
+						Intent intent = new Intent(context, LoginActivity.class);
+						startActivityForResult(intent, Constants.GO_LOGIN_REQUESTCODE);
+					} 
 					break;
 				//设置
 				case R.id.rb_setting:
-					cvp_main_group.setCurrentItem(3, false);
+					cvp_main_group.setCurrentItem(Constants.SETTING_PAGER, false);
 					break;
 					
 				}
 			}
 		});
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == Constants.LOGIN_RETURN_RESULTCODE && LavipeditumApplication.isLogin) {
+			cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
+		}else if (resultCode == Constants.LOGIN_BACK_RESULTCOCE) {
+			//先判断一下当前viewpager当前显示的是那个下标
+			int currentItem = cvp_main_group.getCurrentItem();
+			RadioButton changeButton = (RadioButton) rg_mainfragment_group.getChildAt(currentItem);
+			changeButton.setChecked(true);
+			rg_mainfragment_group.invalidate();
+		}
 	}
 
 	/**
@@ -93,26 +117,23 @@ public class MainFragment extends BaseFragment{
 	 */
 	private List<Fragment> initMainFrameData() {
 		List<Fragment> mainFragments = new ArrayList<Fragment>();
-		
-		//主页
+
+		// 设置
+		SettingFragment settingFragment = new SettingFragment();
+		mainFragments.add(settingFragment);
+
+		// 我的
+		MyFragment myFragment = new MyFragment();
+		mainFragments.add(myFragment);
+
+		// 附近
+		HereaboutFragment hereaboutFragment = new HereaboutFragment();
+		mainFragments.add(hereaboutFragment);
+
+		// 主页
 		HomeFragment homeFragment = new HomeFragment();
 		mainFragments.add(homeFragment);
 		
-		//附近
-		HereaboutFragment hereaboutFragment = new HereaboutFragment();
-		mainFragments.add(hereaboutFragment);
-		
-		//我的
-		MyFragment myFragment = new MyFragment();
-		mainFragments.add(myFragment);
-		
-		//设置
-		SettingFragment settingFragment = new SettingFragment();
-		mainFragments.add(settingFragment);
-		
-		//登陆
-		LoginFragment loginFragment = new LoginFragment();
-		mainFragments.add(loginFragment);
 		return mainFragments;
 	}
 }

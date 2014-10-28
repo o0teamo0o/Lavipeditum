@@ -32,7 +32,7 @@ public abstract class BaseActivity extends Activity {
 		context = getApplicationContext();
 		
 		initView(savedInstanceState);
-		initData(savedInstanceState);
+		initData();
 		initListener();
 	}
 	
@@ -50,7 +50,7 @@ public abstract class BaseActivity extends Activity {
 	 * @Description: 加载数据
 	 * @param savedInstanceState
 	 */
-	protected abstract void initData(Bundle savedInstanceState);
+	protected abstract void initData();
 	
 	/**
 	 * 

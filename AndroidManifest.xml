@@ -23,6 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- 登陆的activity -->
+        <activity android:name="com.jky.lavipeditum.activity.LoginActivity" />
     </application>
 
 </manifest>
