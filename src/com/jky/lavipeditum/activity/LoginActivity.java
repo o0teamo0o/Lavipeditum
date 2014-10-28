@@ -11,33 +11,45 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.os.Environment;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseActivity;
 import com.jky.lavipeditum.base.BasePagerAdapter;
+import com.jky.lavipeditum.base.BaseUserInfo;
 import com.jky.lavipeditum.custom.Rotate3dAnimation;
+import com.jky.lavipeditum.custom_view.ClearEditText;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.lib.tencent.BaseUIListener;
 import com.jky.lavipeditum.lib.weibo.openapi.models.User;
 import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.ImageUtils;
 import com.jky.lavipeditum.util.Logger;
+import com.jky.lavipeditum.util.PhoneNumberUtil;
 import com.jky.lavipeditum.util.ToastUtil;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;
@@ -48,7 +60,6 @@ import com.sina.weibo.sdk.net.AsyncWeiboRunner;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.net.WeiboParameters;
 import com.tencent.connect.UserInfo;
-import com.tencent.connect.auth.QQToken;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -75,6 +86,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private SsoHandler ssoHandler; //注意：SsoHandler 仅当 SDK 支持 SSO 时有效
 	private Oauth2AccessToken accessToken; //装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
 	private Tencent tencent; //Tencent类是SDK的主要实现类
+	private ProgressBar pb_regihter_hint;
+	private PopupWindow popupWindow;
 	
     
 	
@@ -107,6 +120,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_go_login.setOnClickListener(this);
 		tv_login_weibo.setOnClickListener(this);
 		tv_qq_login.setOnClickListener(this);
+		cvp_register.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (popupWindow != null && popupWindow.isShowing()) {
+					popupWindow.dismiss();
+				}
+				return false;
+			}
+		});
 	}
 	
 	/**
@@ -120,6 +143,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private List<View> initRegisterPager() {
 		List<View> pagers = new ArrayList<View>();
 		View inputPager = View.inflate(context, R.layout.register_input_pager, null);
+		pb_regihter_hint = (ProgressBar) inputPager.findViewById(R.id.pb_regihter_hint);
+		cet_regihter_phone = (ClearEditText) inputPager.findViewById(R.id.cet_regihter_phone);
+		
+		pb_regihter_hint.setOnClickListener(this);
+		
 		pagers.add(inputPager);
 		
 		View verificationPager = View.inflate(context, R.layout.register_verification_pager, null);
@@ -146,7 +174,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			break;
 		//微博登陆
 		case R.id.tv_login_weibo:
-			//创建微博授权授权认证信息对象
+			//创建微博授权认证信息对象
 			weiboAuth = new WeiboAuth(LoginActivity.this, Constants.WEIBO_APP_KEY, Constants.WEIBO_REDIRECT_URL, Constants.WEIBO_SCOPE);
 			
 			/**
@@ -168,9 +196,68 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			//跳转登陆页面
 			onClickLogin();
 			break;
+		//注册提示
+		case R.id.pb_regihter_hint:
+			showPopuwindow();
+			break;
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: showPopuwindow
+	 * @Description: 显示popubwindow 用来方便用户操作
+	 */
+	private void showPopuwindow() {
+		View view = View.inflate(LoginActivity.this, R.layout.register_hint_popupwindow, null);
+		
+		//找到控件设置点击事件
+		RadioGroup rg_select_number = (RadioGroup) view.findViewById(R.id.rg_select_number);
+		//判断点击了popubwindow中的哪个按钮
+		rg_select_number.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+				//选择本机号码
+				case R.id.rb_location:
+					//通过系统服务得到电话管理者
+					TelephonyManager tm = (TelephonyManager) LoginActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
+					//通过管理者得到电话号码
+					String localNumber = tm.getLine1Number();
+					String callNumber = PhoneNumberUtil.bridgingCallNumber(localNumber.substring(3, localNumber.length()));
+					//最终设置给控件
+					cet_regihter_phone.setText(callNumber);
+					break;
+				//选择联系人
+				case R.id.rb_contacts:
+					Intent intent = new Intent(LoginActivity.this, AddContactsPhoneNumberActivity.class);
+					startActivityForResult(intent, 11);
+					break;
+				}
+			}
+		});
+		
+		//弹出的popupwindow
+		if (popupWindow != null) {
+			popupWindow.dismiss();
+		}
+		popupWindow = new PopupWindow(
+				view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		
+		popupWindow.setFocusable(false);
+		popupWindow.setOutsideTouchable(true);
+		
+		//得到点击图片的位置
+		int[] location = new int[2];
+		pb_regihter_hint.getLocationInWindow(location);
+		int imageWidth = pb_regihter_hint.getWidth();
+		int imageHeight = pb_regihter_hint.getHeight();
+		
+		//显示到指定位置
+		popupWindow.showAtLocation(pb_regihter_hint, Gravity.NO_GRAVITY, location[0] + imageWidth + 50 , location[1] + (imageHeight / 5));
+	}
+	
 	/**
 	 * 
 	 * @Title: onClickLogin
@@ -213,6 +300,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
 				tencent.setAccessToken(token, expires);
 				tencent.setOpenId(openId);
+				Logger.e(LoginActivity.class, "腾讯唯一openId:" +openId);
 				
 				//获取用户具体信息
 				getTencentUserInfo(tencent);
@@ -236,7 +324,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		boolean ready = tencent.isSessionValid() && tencent.getQQToken().getOpenId() != null;
 		if (ready) {
 			UserInfo tencentUserInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
-			tencentUserInfo.getUserInfo(new BaseUIListener(this, "get_simple_userinfo"));
+			tencentUserInfo.getUserInfo(new BaseUIListener(this, "get_simple_userinfo", tencent));
 		}else{
 			ToastUtil.showMessage(context, "参数状态异常,无法读取用户信息!");
 		}
@@ -434,6 +522,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				
 				// 保存 Token 到 SharedPreferences
 				tokenKeeper.setAccessToken(accessToken);
+				Logger.e(LoginActivity.class, "微博唯一Uid:" + accessToken.getUid());
 				ToastUtil.showMessage(context, "授权成功");
 				
 				//得到用户信息
@@ -475,7 +564,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 		}
 		
-		//微博授权登陆
+		//腾讯授权登陆
 		if (requestCode == Constants.TENCENT_REQUEST_API) {
 			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
 				tencent.handleLoginData(data, loginListener);
@@ -525,12 +614,21 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				User user = User.parse(response);
 				if (user != null) {
 					ToastUtil.showMessage(context, "获取User信息成功，用户昵称：" + user.screen_name);
+					BaseUserInfo userInfo = new BaseUserInfo();
+					userInfo.nickname = user.screen_name; //设置微博昵称
+					userInfo.uid = accessToken.getUid(); //设置微博用户唯一标示
+					userInfo.profile_image_url = user.avatar_large; //设置用户头像
+					userInfo.gender = user.gender; //用户性别
+
+					Logger.e(BaseUIListener.class, "昵称:"+userInfo.nickname+" \n用户id:"+userInfo.openId+" \n用户头像uri:"+userInfo.profile_image_url+" \n性别:"+userInfo.gender);
+	                
 				}else{
 					ToastUtil.showMessage(context, response);
 				}
 			}
 		}
 	};
+	private ClearEditText cet_regihter_phone;
 	
 	/**
 	 * 

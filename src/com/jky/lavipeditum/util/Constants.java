@@ -57,6 +57,13 @@ public class Constants {
     public static final int TENCENT_REQUEST_APPBAR = 10102; //本app内登陆
     
     /*****************************腾讯SDK常量结束***********************************/
+    
+    /*****************************Share_SDK短信常量开始*****************************/
+	
+	public static final String SMS_APPKEY = "3f9aec45c4d9"; //短信验证SDK Appkey
+	public static final String SMS_APP_SECRET = "7eddda429188e467a7d17b5d85c246a3"; //短信验证SDK App Secret
+	
+	/*****************************Share_SDK短信常量结束*****************************/
 
 	public static final String PREFERENCES_NAME = "LavipeditumPreferences"; //共享首选项文件名字
 	
@@ -73,7 +80,37 @@ public class Constants {
 	public static final int MY_PAGER = 1; //我的
 	public static final int SETTING_PAGER = 0; //设置
 	
-	public static final String SMS_APPKEY = "3f9aec45c4d9"; //短信验证SDK Appkey
-	public static final String SMS_APP_SECRET = "7eddda429188e467a7d17b5d85c246a3"; //短信验证SDK App Secret
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

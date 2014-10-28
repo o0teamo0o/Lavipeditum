@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <ProgressBar
+        android:id="@+id/pb_regihter_hint"
+        android:layout_width="67dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:indeterminateDrawable="@drawable/register_hint" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dip"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dp"
         android:background="@drawable/wb_personal_item_full_normal"
         android:orientation="vertical" >
 
@@ -21,7 +30,7 @@
             android:orientation="horizontal" >
 
             <com.jky.lavipeditum.custom_view.ClearEditText
-                android:id="@+id/cd_user"
+                android:id="@+id/cet_regihter_phone"
                 android:layout_width="@dimen/login_editview_width"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -39,8 +48,8 @@
             <ImageView
                 android:id="@+id/iv_line"
                 style="@style/login_editview"
-                android:layout_toLeftOf="@id/cd_user"
-                android:layout_toStartOf="@id/cd_user"
+                android:layout_toLeftOf="@id/cet_regihter_phone"
+                android:layout_toStartOf="@id/cet_regihter_phone"
                 android:contentDescription="@null"
                 android:src="@drawable/wb_infolist_tab_divider_small_version" />
 
@@ -48,7 +57,6 @@
                 style="@style/login_editview"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/iv_line"
-                android:layout_toStartOf="@id/iv_line"
                 android:text="@string/username"
                 android:textSize="16sp" />
         </RelativeLayout>

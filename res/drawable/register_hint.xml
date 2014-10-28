@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:drawable="@drawable/rili_girl_upone" android:duration="150" />
+    <item android:drawable="@drawable/rili_girl_uptow" android:duration="150" />
+    <item android:drawable="@drawable/rili_girl_upthree" android:duration="100" />
+    <item android:drawable="@drawable/rili_girl_up" android:duration="50" />
+    <item android:drawable="@drawable/rili_girl" android:duration="1500" />
+
+</animation-list>

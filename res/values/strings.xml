@@ -23,5 +23,6 @@
     <string name="login_remember_pwd">记住密码</string>
     <string name="username_regihter_hint">请输入要注册的手机号码</string>
     <string name="weibosdk_token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
+    <string name="friend_phone_number">您选中的亲友号码为:</string>
 
 </resources>

@@ -7,9 +7,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.google.gson.Gson;
+import com.jky.lavipeditum.base.BaseUserInfo;
+import com.jky.lavipeditum.bean.TencentUserInfo;
 import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.ToastUtil;
+import com.tencent.a.a.g;
 import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 /**
@@ -27,6 +32,9 @@ public class BaseUIListener implements IUiListener {
 	private static final int ON_COMPLETE = 0;
 	private static final int ON_ERROR = 1;
 	private static final int ON_CANCEL = 2;
+	private Tencent tencent;
+	
+	
 	private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -36,6 +44,19 @@ public class BaseUIListener implements IUiListener {
                 JSONObject response = (JSONObject)msg.obj;
                 Logger.d(BaseUIListener.class, "用户信息读取成功:" + response.toString());
                 ToastUtil.showMessage(mContext, "用户信息读取成功:"+response.toString());
+                Gson gson = new Gson();
+                TencentUserInfo tencentUserInfo = gson.fromJson(response.toString(), TencentUserInfo.class);
+                Logger.e(BaseUIListener.class, tencentUserInfo.nickname);
+                
+                //最终合成本地用户数据
+                BaseUserInfo userInfo = new BaseUserInfo();
+                userInfo.nickname = tencentUserInfo.nickname; //腾讯的昵称
+                userInfo.openId = tencent.getOpenId(); //腾讯登陆用户的唯一标示
+                userInfo.profile_image_url = tencentUserInfo.figureurl_qq_2; //用户头像信息
+                userInfo.gender = tencentUserInfo.gender; //用户性别
+                
+                Logger.e(BaseUIListener.class, "昵称:"+userInfo.nickname+"\n 用户id:"+userInfo.openId+" \n用户头像uri"+userInfo.profile_image_url+" \n性别:"+userInfo.gender);
+                
                 break;
             //读取用户信息错误的回调消息
             case ON_ERROR:
@@ -60,10 +81,11 @@ public class BaseUIListener implements IUiListener {
 	}
 
 	
-	public BaseUIListener(Context mContext, String mScope) {
+	public BaseUIListener(Context mContext, String mScope, Tencent tencent) {
 		super();
 		this.mContext = mContext;
 		this.mScope = mScope;
+		this.tencent = tencent;
 	}
 	
 	public void cancel() {
