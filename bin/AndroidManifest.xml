@@ -6,7 +6,21 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="19" />
+    
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    
+    <!-- 微博SDK使用的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	
+	<!-- 短信验证设计到权限 -->
+	<uses-permission android:name="android.permission.RECEIVE_SMS" />
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +38,48 @@
             </intent-filter>
         </activity>
         
-        <!-- 登陆的activity -->
+        <!-- 腾讯SDK使用的activity -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 这里填写你申请到的APP_ID -->
+                <data android:scheme="1103408492" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 腾讯SDK使用的activity -->
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
+		<!-- 登陆的activity -->
         <activity android:name="com.jky.lavipeditum.activity.LoginActivity" />
+        
+        <!-- 查询联系人的activity -->
+        <activity android:name="com.jky.lavipeditum.activity.AddContactsPhoneNumberActivity" />
+        
+        <!-- 短信sdk需要的acitivity -->
+        <activity
+		   android:name="cn.smssdk.SMSSDKUIShell"
+		   android:configChanges="keyboardHidden|orientation|screenSize"
+		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
+		   android:windowSoftInputMode="stateHidden|adjustResize" />
+        
+         <!-- 检查网络的receiver -->
+         <receiver android:name="com.jky.lavipeditum.receiver.NetWorkReceiver">
+             <intent-filter >
+                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+             </intent-filter>
+         </receiver>
     </application>
 
 </manifest>

@@ -30,9 +30,9 @@ public class AccessTokenKeeper {
 	 */
 	public void setAccessToken(Oauth2AccessToken token){
 		Editor edit = preferences.edit();
-		edit.putString(Constants.KEY_UID, token.getUid());
-		edit.putString(Constants.KEY_ACCESS_TOKEN, token.getToken());
-		edit.putLong(Constants.KEY_EXPIRES_IN, token.getExpiresTime());
+		edit.putString(Constants.WEIBO_KEY_UID, token.getUid());
+		edit.putString(Constants.WEIBO_KEY_ACCESS_TOKEN, token.getToken());
+		edit.putLong(Constants.WEIBO_KEY_EXPIRES_IN, token.getExpiresTime());
 		edit.commit();
 	}
 	
@@ -44,9 +44,9 @@ public class AccessTokenKeeper {
 	 */
 	public Oauth2AccessToken getAccessToken(){
 		Oauth2AccessToken token = new Oauth2AccessToken();
-		token.setUid(preferences.getString(Constants.KEY_UID,  ""));
-		token.setToken(preferences.getString(Constants.KEY_ACCESS_TOKEN, ""));
-		token.setExpiresTime(preferences.getLong(Constants.KEY_EXPIRES_IN, 0));
+		token.setUid(preferences.getString(Constants.WEIBO_KEY_UID,  ""));
+		token.setToken(preferences.getString(Constants.WEIBO_KEY_ACCESS_TOKEN, ""));
+		token.setExpiresTime(preferences.getLong(Constants.WEIBO_KEY_EXPIRES_IN, 0));
 		return token;
 	}
 	
