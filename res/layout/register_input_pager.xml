@@ -42,6 +42,7 @@
                 android:hint="@string/username_regihter_hint"
                 android:inputType="text"
                 android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/main_color"
                 android:textSize="14sp" />
 
@@ -63,14 +64,13 @@
     </LinearLayout>
 
     <com.jky.lavipeditum.custom_view.BootstrapButton
+        android:id="@+id/bb_identifying"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:text="获取手机验证码"
         android:textSize="16sp"
-        bootstrapbutton:bb_icon_left="fa-chevron-circle-right"
-        bootstrapbutton:bb_icon_right="fa-chevron-circle-left"
         bootstrapbutton:bb_roundedCorners="true"
         bootstrapbutton:bb_size="default"
         bootstrapbutton:bb_text_gravity="center"

@@ -6,11 +6,14 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,15 +36,20 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
+import com.jky.lavipeditum.LavipeditumApplication;
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseActivity;
 import com.jky.lavipeditum.base.BasePagerAdapter;
 import com.jky.lavipeditum.base.BaseUserInfo;
 import com.jky.lavipeditum.custom.Rotate3dAnimation;
+import com.jky.lavipeditum.custom_view.BootstrapButton;
 import com.jky.lavipeditum.custom_view.ClearEditText;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.lib.tencent.BaseUIListener;
@@ -50,6 +58,7 @@ import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.ImageUtils;
 import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.PhoneNumberUtil;
+import com.jky.lavipeditum.util.PhoneValidator;
 import com.jky.lavipeditum.util.ToastUtil;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;
@@ -88,7 +97,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private Tencent tencent; //Tencent类是SDK的主要实现类
 	private ProgressBar pb_regihter_hint;
 	private PopupWindow popupWindow;
-	
+	private BootstrapButton bb_login, bb_identifying;
+	private ClearEditText cet_username, cet_pwd, cet_regihter_phone;
+	private List<PopupWindow> setAlertDialogs;
+	private SmsEventHandler smsEventHandler; //短信回调接口
     
 	
 	@Override
@@ -102,6 +114,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_go_login = (TextView) this.findViewById(R.id.tv_go_login);
 		tv_login_weibo = (TextView) this.findViewById(R.id.tv_login_weibo);
 		tv_qq_login = (TextView) this.findViewById(R.id.tv_qq_login);
+		bb_login = (BootstrapButton) this.findViewById(R.id.bb_login);
+		cet_username = (ClearEditText) this.findViewById(R.id.cet_username);
+		cet_pwd = (ClearEditText) this.findViewById(R.id.cet_pwd);
 		
 		cvp_register = (CustomViewPager) this.findViewById(R.id.cvp_register);
 	}
@@ -120,6 +135,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_go_login.setOnClickListener(this);
 		tv_login_weibo.setOnClickListener(this);
 		tv_qq_login.setOnClickListener(this);
+		bb_login.setOnClickListener(this);
+		
 		cvp_register.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -145,8 +162,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		View inputPager = View.inflate(context, R.layout.register_input_pager, null);
 		pb_regihter_hint = (ProgressBar) inputPager.findViewById(R.id.pb_regihter_hint);
 		cet_regihter_phone = (ClearEditText) inputPager.findViewById(R.id.cet_regihter_phone);
+		bb_identifying = (BootstrapButton) inputPager.findViewById(R.id.bb_identifying);
 		
 		pb_regihter_hint.setOnClickListener(this);
+		bb_identifying.setOnClickListener(this);
 		
 		pagers.add(inputPager);
 		
@@ -161,6 +180,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 去注册
 		case R.id.tv_go_register:
 			if (!showRegister) {
+				if (setAlertDialogs != null) {
+					for (PopupWindow p : setAlertDialogs) {
+						p.dismiss();
+					}
+				}
 				applyRotation(0, -90);
 				showRegister = true;
 			}
@@ -168,6 +192,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 去登陆
 		case R.id.tv_go_login:
 			if (showRegister) {
+				if (popupWindow != null && popupWindow.isShowing()) {
+					popupWindow.dismiss();
+				}
+				if (setAlertDialogs != null) {
+					for (PopupWindow p : setAlertDialogs) {
+						p.dismiss();
+					}
+				}
 				applyRotation(0, 90);
 				showRegister = false;
 			}
@@ -200,7 +232,155 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		case R.id.pb_regihter_hint:
 			showPopuwindow();
 			break;
+		//登陆
+		case R.id.bb_login:
+			String userName = cet_username.getText().toString().trim();
+			String password = cet_pwd.getText().toString().trim();
+			
+			//判断手机号码和密码是否为空
+			if (TextUtils.isEmpty(userName)) {
+				setAlertDialogs = cet_username.setAlertDialog(LoginActivity.this, "手机号码不能为空!");
+			}else if (TextUtils.isEmpty(password)) {
+				setAlertDialogs = cet_pwd.setAlertDialog(LoginActivity.this, "密码不能为空!");
+			}
+			break;
+		//获取验证码
+		case R.id.bb_identifying:
+			String phoneNumber = cet_regihter_phone.getText().toString().trim();
+			
+			//判断用户名是否为空
+			if (TextUtils.isEmpty(phoneNumber)) {
+				setAlertDialogs = cet_regihter_phone.setAlertDialog(LoginActivity.this, "手机号码不能为空!");
+			}else {
+				if (!new PhoneValidator(phoneNumber).isValid()) {
+					setAlertDialogs = cet_regihter_phone.setAlertDialog(LoginActivity.this, "手机号码不正确!");
+				}else{
+					if (LavipeditumApplication.isNetWork) {
+						//初始化SDK 短信SDK的入口
+						SMSSDK.initSDK(LoginActivity.this, Constants.SMS_APPKEY, Constants.SMS_APP_SECRET);
+						
+						//注册短信回调接口
+						smsEventHandler = new SmsEventHandler();
+						SMSSDK.registerEventHandler(smsEventHandler);
+						
+						//弹出对话框确认手机号码
+						Dialog commonDialog = new Dialog(LoginActivity.this);
+						commonDialog.setContentView(R.layout.smssdk_send_msg_dialog);
+						commonDialog.show();
+					}else{
+						ToastUtil.showMessage(LoginActivity.this, "当前没有网络,是否去设置!");
+					}
+				}
+			}
+			break;
 		}
+	}
+	
+	/**
+	 * 
+	 * @ClassName: SmsEventHandler
+	 * @Description: 注册 短信回调接口
+	 *
+	 * @author o0teamo0o
+	 * @date 2014年11月3日 下午10:09:35
+	 */
+	private class SmsEventHandler extends EventHandler{
+
+		/**
+		 * 事件执行后调用
+		 */
+		@Override
+		public void afterEvent(int event, int result, java.lang.Object data){
+			super.afterEvent(event, result, data);
+			//操作表示成功
+			if (result == SMSSDK.RESULT_COMPLETE) {
+				Logger.v(LoginActivity.class, "成功!");
+				switch (event) {
+				//返回支持发送验证码的国家列表
+				case SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES:
+					// data ArrayList<HashMap<String,Object>>
+					break;
+				//请求发送验证码，无返回
+				case SMSSDK.EVENT_GET_VERIFICATION_CODE:
+					
+					break;
+				//校验验证码，返回校验的手机和国家代码
+				case SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE:
+					// data	HashMap<String,Object>
+					@SuppressWarnings("unchecked")
+					HashMap<String,Object> phoneMap = (HashMap<String, Object>) data;
+					//得到国家
+					String country = (String) phoneMap.get("country");
+					String phone = (String) phoneMap.get("phone");
+					//提交用户信息
+					registerUser(country, phone);
+					break;
+				//获取手机内部的通信录列表
+				case SMSSDK.EVENT_GET_CONTACTS:
+					//data ArrayList<HashMap<String,Object>>
+					break;
+				//提交应用内的用户资料
+				case SMSSDK.EVENT_SUBMIT_USER_INFO:
+					
+					break;
+				//获取手机通信录在当前应用内的用户列表
+				case SMSSDK.EVENT_GET_FRIENDS_IN_APP:
+					//data ArrayList<HashMap<String,Object>>
+					break;
+				//获取手机通信录在当前应用内的新用户个数
+				case SMSSDK.EVENT_GET_NEW_FRIENDS_COUNT:
+					//data Integer
+					break;
+				}
+			}
+			//操作表示失败
+			else if (result == SMSSDK.RESULT_ERROR) {
+				Logger.v(LoginActivity.class, "失败!");
+			}
+		}
+
+		/**
+		 * 事件执行前调
+		 */
+		@Override
+		public void beforeEvent(int event, java.lang.Object data) {
+			super.beforeEvent(event, data);
+		}
+
+		/**
+		 * 注册监听
+		 */
+		@Override
+		public void onRegister() {
+			super.onRegister();
+		}
+
+		/**
+		 * 反注册监听
+		 */
+		@Override
+		public void onUnregister() {
+			super.onUnregister();
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @Title: registerUser
+	 * @Description: 提交短信注册用户信息
+	 * @param country
+	 * @param phone
+	 */
+	public void registerUser(String country, String phone) {
+		Random rnd = new Random(); //随机参数一个数
+		int id = Math.abs(rnd.nextInt()); //产生一个用户id
+		String uid = String.valueOf(id); 
+		String nickName = "Lavipeditum_User_" + uid; //产生一个昵称
+		String avatar = Constants.AVATARS[id % 12]; //产生一个随机头像
+		
+		//提交用户信息，在监听中返回
+		SMSSDK.submitUserInfo(uid, nickName, avatar, country, phone);
 	}
 
 	/**
@@ -213,6 +393,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		
 		//找到控件设置点击事件
 		RadioGroup rg_select_number = (RadioGroup) view.findViewById(R.id.rg_select_number);
+		RadioButton rb_contacts = (RadioButton) view.findViewById(R.id.rb_contacts);
 		//判断点击了popubwindow中的哪个按钮
 		rg_select_number.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
@@ -231,8 +412,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					break;
 				//选择联系人
 				case R.id.rb_contacts:
+					//跳转到添加联系人页面
 					Intent intent = new Intent(LoginActivity.this, AddContactsPhoneNumberActivity.class);
-					startActivityForResult(intent, 11);
+					startActivityForResult(intent, Constants.GO_CONSTACT_PAGER_REQUESTCODE);
+					//rb_contacts.setChecked(checked);
+					popupWindow.dismiss();
 					break;
 				}
 			}
@@ -563,7 +747,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		if (ssoHandler != null) {
 			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 		}
-		
 		//腾讯授权登陆
 		if (requestCode == Constants.TENCENT_REQUEST_API) {
 			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
@@ -575,6 +758,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		else if (requestCode == Constants.TENCENT_REQUEST_APPBAR) {
 			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
 				updateUserInfo();
+			}
+		}
+		//判断是否是联系人页面的返回
+		if (resultCode == Constants.CONSTACT_PAGER_RESULTCODE) {
+			if (data != null) {
+				String constactsNumber = data.getStringExtra("friendPhoneNumber");
+				Logger.d(LoginActivity.class, "constactsNumber: "+constactsNumber);
+				String callNumber = PhoneNumberUtil.bridgingCallNumber(constactsNumber);
+				//最终设置给控件
+				cet_regihter_phone.setText(callNumber);
 			}
 		}
 	}
@@ -616,11 +809,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					ToastUtil.showMessage(context, "获取User信息成功，用户昵称：" + user.screen_name);
 					BaseUserInfo userInfo = new BaseUserInfo();
 					userInfo.nickname = user.screen_name; //设置微博昵称
-					userInfo.uid = accessToken.getUid(); //设置微博用户唯一标示
+					userInfo.uid = user.id; //设置微博用户唯一标示
 					userInfo.profile_image_url = user.avatar_large; //设置用户头像
 					userInfo.gender = user.gender; //用户性别
 
-					Logger.e(BaseUIListener.class, "昵称:"+userInfo.nickname+" \n用户id:"+userInfo.openId+" \n用户头像uri:"+userInfo.profile_image_url+" \n性别:"+userInfo.gender);
+					Logger.e(BaseUIListener.class, "昵称:"+userInfo.nickname+" \n用户id:"+userInfo.uid+" \n用户头像uri:"+userInfo.profile_image_url+" \n性别:"+userInfo.gender);
 	                
 				}else{
 					ToastUtil.showMessage(context, response);
@@ -628,7 +821,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	};
-	private ClearEditText cet_regihter_phone;
 	
 	/**
 	 * 
@@ -718,6 +910,19 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			setResult(Constants.LOGIN_BACK_RESULTCOCE, intent);
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		//处理popopwindow的生命周期
+		if (popupWindow != null && popupWindow.isShowing()) {
+			popupWindow.dismiss();
+		}
+		//注销短信验证的回调接口
+		if (smsEventHandler != null) {
+			SMSSDK.unregisterEventHandler(smsEventHandler);
+		}
 	}
 
 }

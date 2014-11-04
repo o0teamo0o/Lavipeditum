@@ -28,6 +28,7 @@ import com.jky.lavipeditum.custom_view.SideBar;
 import com.jky.lavipeditum.custom_view.SideBar.OnTouchingLetterChangedListener;
 import com.jky.lavipeditum.engine.ContactInfoService;
 import com.jky.lavipeditum.util.CharacterParser;
+import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.PinyinComparator;
 
 /**
@@ -230,7 +231,9 @@ public class AddContactsPhoneNumberActivity extends BaseActivity implements OnCl
 		Intent intent = new Intent();
 		intent.putExtra("friendName", friendName);
 		intent.putExtra("friendPhoneNumber", friendPhoneNumber);
-		//setResult(resultCode, intent);
+		setResult(Constants.CONSTACT_PAGER_RESULTCODE, intent);
+		//取消继续显示
+		AddContactsPhoneNumberActivity.this.finish();
 	}
 
 }

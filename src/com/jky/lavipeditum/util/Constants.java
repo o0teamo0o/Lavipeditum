@@ -63,6 +63,22 @@ public class Constants {
 	public static final String SMS_APPKEY = "3f9aec45c4d9"; //短信验证SDK Appkey
 	public static final String SMS_APP_SECRET = "7eddda429188e467a7d17b5d85c246a3"; //短信验证SDK App Secret
 	
+	// 短信注册，随机产生头像
+	public static final String[] AVATARS = {
+		"http://tupian.qqjay.com/u/2011/0729/e755c434c91fed9f6f73152731788cb3.jpg",
+		"http://99touxiang.com/public/upload/nvsheng/125/27-011820_433.jpg",
+		"http://img1.touxiang.cn/uploads/allimg/111029/2330264224-36.png",
+		"http://img1.2345.com/duoteimg/qqTxImg/2012/04/09/13339485237265.jpg",
+		"http://diy.qqjay.com/u/files/2012/0523/f466c38e1c6c99ee2d6cd7746207a97a.jpg",
+		"http://img1.touxiang.cn/uploads/20121224/24-054837_708.jpg",
+		"http://img1.touxiang.cn/uploads/20121212/12-060125_658.jpg",
+		"http://img1.touxiang.cn/uploads/20130608/08-054059_703.jpg",
+		"http://diy.qqjay.com/u2/2013/0422/fadc08459b1ef5fc1ea6b5b8d22e44b4.jpg",
+		"http://img1.2345.com/duoteimg/qqTxImg/2012/04/09/13339510584349.jpg",
+		"http://img1.touxiang.cn/uploads/20130515/15-080722_514.jpg",
+		"http://diy.qqjay.com/u2/2013/0401/4355c29b30d295b26da6f242a65bcaad.jpg"
+	};
+	
 	/*****************************Share_SDK短信常量结束*****************************/
 
 	public static final String PREFERENCES_NAME = "LavipeditumPreferences"; //共享首选项文件名字
@@ -71,8 +87,10 @@ public class Constants {
 	public static final String LEFT_FRAGMENT_NAME = "LeftMenuFragment"; //左边菜单栏fragment
 	
 	public static final int GO_LOGIN_REQUESTCODE = 00; //主界面跳转到登陆界面的请求code
-	public static final int LOGIN_RETURN_RESULTCODE = 11;  //登陆返回信息
+	public static final int LOGIN_RETURN_RESULTCODE = 10;  //登陆返回信息
 	public static final int LOGIN_BACK_RESULTCOCE = -1; //在登陆界面按返回的返回值
+	public static final int GO_CONSTACT_PAGER_REQUESTCODE = 01; //注册页面跳转到添加联系人号码界面的请求code
+	public static final int CONSTACT_PAGER_RESULTCODE = 11; //联系人返回的界面
 	
 	//主界面的四个页面
 	public static final int HOME_PAGER = 3; //主页

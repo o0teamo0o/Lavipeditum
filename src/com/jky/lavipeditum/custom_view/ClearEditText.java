@@ -2,18 +2,26 @@ package com.jky.lavipeditum.custom_view;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.jky.lavipeditum.R;
 
@@ -28,6 +36,8 @@ import com.jky.lavipeditum.R;
 public class ClearEditText extends EditText implements OnFocusChangeListener, TextWatcher {
 	private Drawable mClearDrawable;  //删除按钮的引用
 	private boolean hasFoucs; //控件是否有焦点
+	private PopupWindow popupHeadWindow;
+	private PopupWindow popupBodyWindow;
 
 	public ClearEditText(Context context) { 
     	this(context, null); 
@@ -86,6 +96,15 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
 	 * @param visible
 	 */
 	private void setClearIconVisible(boolean visible) {
+		//判断是否输入了内容,如果输入了内容我们就把弹窗关闭
+		if (visible) {
+			if (popupHeadWindow != null) {
+				popupHeadWindow.dismiss();
+			}
+			if (popupBodyWindow != null) {
+				popupBodyWindow.dismiss();
+			}
+		}
 		Drawable right = visible ? mClearDrawable : null;
 		setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
 	}
@@ -112,6 +131,9 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
 	public void onTextChanged(CharSequence text, int start, int before,
 			int after) {
 		if(hasFoucs){
+			//获取焦点设置回之前的图标
+			mClearDrawable = getResources().getDrawable(R.drawable.delete);
+			mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
 			setClearIconVisible(text.length() > 0);
 		}
 	}
@@ -132,6 +154,52 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
 	 */
 	public void setShakeAnimation(){
 		this.setAnimation(shakeAnimation(5));
+	}
+	
+	/**
+	 * 
+	 * @Title: setAlertDialog
+	 * @Description: 显示警告对话框,该方法返回一个对话框集合,调用者可以自己cancel掉
+	 * @param context
+	 * @param message
+	 * @return
+	 */
+	public List<PopupWindow> setAlertDialog(Context context, String message){
+		List<PopupWindow> popupWindows = new ArrayList<PopupWindow>();
+		mClearDrawable = getResources().getDrawable(R.drawable.exclamation_mark);
+		mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
+		setClearIconVisible(true);
+		//箭头的图片
+		ImageView popupHead = new ImageView(context);
+		if (popupHeadWindow != null) {
+			popupHeadWindow.dismiss();
+		}
+		popupHeadWindow = new PopupWindow(popupHead, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		
+		popupHeadWindow.setOutsideTouchable(true);
+		
+		//显示内容的popup也构造出来
+		View popupBody = View.inflate(context, R.layout.empty_alert_popup, null);
+		TextView tv_content = (TextView) popupBody.findViewById(R.id.tv_content);
+		tv_content.setText(message);
+		
+		if (popupBodyWindow != null) {
+			popupBodyWindow.dismiss();
+		}
+		popupBodyWindow = new PopupWindow(popupBody, -2, -2);
+		
+		
+		//找到具体坐标
+		int[] location = new int[2];
+		//
+		this.getLocationInWindow(location);
+		popupHead.setImageResource(R.drawable.bg_head_bottom);
+		popupHeadWindow.showAtLocation(this, Gravity.NO_GRAVITY, location[0] + this.getWidth() - 30, location[1] + this.getHeight());
+		popupWindows.add(popupHeadWindow);
+		
+		popupBodyWindow.showAtLocation(popupHead, Gravity.NO_GRAVITY, location[0]  + this.getWidth(), location[1] + this.getHeight() + 15);
+		popupWindows.add(popupBodyWindow);
+		return popupWindows;
 	}
 
 	/**

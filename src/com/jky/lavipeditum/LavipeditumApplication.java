@@ -21,6 +21,8 @@ public class LavipeditumApplication extends Application {
 	
 	//判断是否登陆
 	public static boolean isLogin = false;
+	//判断网络是否正常
+	public static boolean isNetWork = true;
 
 	@Override
 	public void onCreate() {

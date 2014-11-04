@@ -17,8 +17,10 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	
-	<!-- 腾讯SDK使用的权限 -->
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<!-- 短信验证设计到权限 -->
+	<uses-permission android:name="android.permission.RECEIVE_SMS" />
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -64,6 +66,20 @@
         <!-- 查询联系人的activity -->
         <activity android:name="com.jky.lavipeditum.activity.AddContactsPhoneNumberActivity" />
         
+        <!-- 短信sdk需要的acitivity -->
+        <activity
+		   android:name="cn.smssdk.SMSSDKUIShell"
+		   android:configChanges="keyboardHidden|orientation|screenSize"
+		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
+		   android:windowSoftInputMode="stateHidden|adjustResize" />
+        
+         <!-- 检查网络的receiver -->
+         <receiver android:name="com.jky.lavipeditum.receiver.NetWorkReceiver">
+             <intent-filter >
+                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+             </intent-filter>
+         </receiver>
     </application>
 
 </manifest>

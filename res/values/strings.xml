@@ -7,7 +7,7 @@
     <string name="city_name">长沙</string>
     <string name="left_menu_explain">打开左边菜单</string>
     <string name="search_hint">输入店铺,地名</string>
-    <string name="main_home">主页</string> 
+    <string name="main_home">主页</string>
     <string name="main_hereabout">附近</string>
     <string name="main_my">我的</string>
     <string name="main_setting">设置</string>
@@ -21,8 +21,12 @@
     <string name="password">密 码</string>
     <string name="login_forget_pwd">忘记密码?</string>
     <string name="login_remember_pwd">记住密码</string>
-    <string name="username_regihter_hint">请输入要注册的手机号码</string>
+    <string name="username_regihter_hint">请输入手机号码</string>
     <string name="weibosdk_token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
     <string name="friend_phone_number">您选中的亲友号码为:</string>
+    <string name="smssdk_make_sure_mobile_num">确认手机号码</string>
+    <string name="smssdk_cancel">取消</string>
+    <string name="smssdk_ok">好</string>
+    <string name="smssdk_make_sure_mobile_detail"><Data>我们将发送&lt;font color=#3cac17>验证码&lt;/font>短信到这个号码:</Data></string>
 
 </resources>

@@ -18,10 +18,25 @@ public class PhoneNumberUtil {
 	 * @return
 	 */
 	public static String bridgingCallNumber(String number){
-		String numberHead = number.substring(0, 3);
-		String numberBody = number.substring(3, 7);
-		String numberTail = number.substring(7, number.length());
-		return numberHead + " " + numberBody + " " + numberTail;
+		//如果号码只有4位数 直接返回
+		if (number.length() <= 4) {
+			return number;
+		}
+		//如果读出来的手机号码是这种形式 1-864-334-1134需要特殊处理
+		else if (number.contains("-")) {
+			String phoneNumber = "";
+			String[] split = number.split("-");
+			for (int i = 0; i < split.length; i++) {
+				Logger.d(PhoneNumberUtil.class, split[i]);
+				phoneNumber = phoneNumber + split[i] + " ";
+			}
+			return phoneNumber;
+		}else{
+			String numberHead = number.substring(0, 3);
+			String numberBody = number.substring(3, 7);
+			String numberTail = number.substring(7, number.length());
+			return numberHead + " " + numberBody + " " + numberTail;
+		}
 	}
 	
 	/**
