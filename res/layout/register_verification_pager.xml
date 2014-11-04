@@ -5,6 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/tv_identify_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:gravity="center"
+        android:textColor="#353535"
+        android:textSize="19sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +40,7 @@
             android:orientation="horizontal" >
 
             <com.jky.lavipeditum.custom_view.ClearEditText
-                android:id="@+id/cd_user"
+                android:id="@+id/cet_proving"
                 android:layout_width="@dimen/login_editview_width"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -30,7 +49,7 @@
                 android:layout_marginEnd="10dip"
                 android:layout_marginRight="10dip"
                 android:background="@null"
-                android:hint="@string/username_regihter_hint"
+                android:hint="请输入验证码"
                 android:inputType="text"
                 android:lines="1"
                 android:textColor="@color/main_color"
@@ -39,8 +58,8 @@
             <ImageView
                 android:id="@+id/iv_line"
                 style="@style/login_editview"
-                android:layout_toLeftOf="@id/cd_user"
-                android:layout_toStartOf="@id/cd_user"
+                android:layout_toLeftOf="@id/cet_proving"
+                android:layout_toStartOf="@id/cet_proving"
                 android:contentDescription="@null"
                 android:src="@drawable/wb_infolist_tab_divider_small_version" />
 
@@ -50,11 +69,24 @@
                 android:layout_toLeftOf="@id/iv_line"
                 android:layout_toStartOf="@id/iv_line"
                 android:text="验证码"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_unreceive_identify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dip"
+        android:layout_marginTop="15dip"
+        android:gravity="center"
+        android:text="@string/smssdk_receive_msg"
+        android:textColor="#5c5c5c"
+        android:textSize="13sp" />
+
     <com.jky.lavipeditum.custom_view.BootstrapButton
+        android:id="@+id/bb_proving_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"

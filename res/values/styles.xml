@@ -21,4 +21,5 @@
         <item name="android:layout_marginRight">15dip</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
+    
 </resources>

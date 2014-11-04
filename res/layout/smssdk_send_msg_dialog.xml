@@ -26,7 +26,6 @@
         android:layout_marginTop="15dip"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
-        android:text="@string/smssdk_make_sure_mobile_detail"
         android:textColor="#ffffff"
         android:textSize="15sp" />
 
@@ -50,22 +49,6 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/btn_dialog_ok"
-            android:layout_width="0dip"
-            android:layout_height="50dip"
-            android:layout_marginLeft="1dip"
-            android:layout_weight="1"
-            android:background="@drawable/smssdk_dialog_btn_back"
-            android:padding="10dip"
-            android:text="@string/smssdk_ok"
-            android:textColor="#ffffff" />
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:background="#ff737373" />
-
-        <Button
             android:id="@+id/btn_dialog_cancel"
             android:layout_width="0dip"
             android:layout_height="50dip"
@@ -74,6 +57,22 @@
             android:background="@drawable/smssdk_dialog_btn_back"
             android:padding="10dip"
             android:text="@string/smssdk_cancel"
+            android:textColor="#ffffff" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#ff737373" />
+
+        <Button
+            android:id="@+id/btn_dialog_ok"
+            android:layout_width="0dip"
+            android:layout_height="50dip"
+            android:layout_marginLeft="1dip"
+            android:layout_weight="1"
+            android:background="@drawable/smssdk_dialog_btn_back"
+            android:padding="10dip"
+            android:text="@string/smssdk_ok"
             android:textColor="#ffffff" />
     </LinearLayout>
 

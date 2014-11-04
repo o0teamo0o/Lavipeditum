@@ -59,10 +59,11 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/iv_line"
                 android:text="@string/username"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
-
+    
     <com.jky.lavipeditum.custom_view.BootstrapButton
         android:id="@+id/bb_identifying"
         android:layout_width="match_parent"

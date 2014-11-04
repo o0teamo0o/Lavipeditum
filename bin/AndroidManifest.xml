@@ -61,7 +61,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         
 		<!-- 登陆的activity -->
-        <activity android:name="com.jky.lavipeditum.activity.LoginActivity" />
+        <activity android:name="com.jky.lavipeditum.activity.LoginActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         
         <!-- 查询联系人的activity -->
         <activity android:name="com.jky.lavipeditum.activity.AddContactsPhoneNumberActivity" />

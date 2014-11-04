@@ -27,6 +27,6 @@
     <string name="smssdk_make_sure_mobile_num">确认手机号码</string>
     <string name="smssdk_cancel">取消</string>
     <string name="smssdk_ok">好</string>
-    <string name="smssdk_make_sure_mobile_detail"><Data>我们将发送&lt;font color=#3cac17>验证码&lt;/font>短信到这个号码:</Data></string>
+    <string name="smssdk_receive_msg"><Data>接收短信大约需要&lt;font color=#209526>%s&lt;/font>秒</Data></string>
 
 </resources>

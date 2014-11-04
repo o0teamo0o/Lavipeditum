@@ -62,6 +62,7 @@ public class Constants {
 	
 	public static final String SMS_APPKEY = "3f9aec45c4d9"; //短信验证SDK Appkey
 	public static final String SMS_APP_SECRET = "7eddda429188e467a7d17b5d85c246a3"; //短信验证SDK App Secret
+	public static final String SMS_COUNTRY_ID = "86"; //中国国家代号
 	
 	// 短信注册，随机产生头像
 	public static final String[] AVATARS = {

@@ -47,9 +47,24 @@ public class PhoneNumberUtil {
 	 * @return
 	 */
 	public static String restoreCallNumber(String number){
-		String numberHead = number.substring(0, 3);
-		String numberBody = number.substring(4, 8);
-		String numberTail = number.substring(9, number.length());
-		return numberHead + numberBody + numberTail;
+		//如果号码只有4位数 直接返回
+		if (number.length() <= 4) {
+			return number;
+		}else{
+			String numberHead = number.substring(0, 3);
+			String numberBody;
+			try {
+				numberBody = number.substring(4, 8);
+			} catch (Exception e) {
+				return number;
+			}
+			String numberTail;
+			try {
+				numberTail = number.substring(9, number.length());
+			} catch (Exception e) {
+				return numberHead + numberBody;
+			}
+			return numberHead + numberBody + numberTail;
+		}
 	}
 }
