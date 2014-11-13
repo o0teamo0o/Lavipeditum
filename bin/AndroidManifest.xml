@@ -65,7 +65,7 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         
         <!-- 查询联系人的activity -->
-        <activity android:name="com.jky.lavipeditum.activity.AddContactsPhoneNumberActivity" />
+        <activity android:name="com.jky.lavipeditum.activity.RegisterAddCallNumberActivity" />
         
         <!-- 短信sdk需要的acitivity -->
         <activity

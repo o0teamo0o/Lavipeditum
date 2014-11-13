@@ -11,15 +11,20 @@ import com.jky.lavipeditum.lib.slidingmenu.SlidingFragmentActivity;
 import com.jky.lavipeditum.lib.slidingmenu.SlidingMenu;
 import com.jky.lavipeditum.lib.slidingmenu.SlidingMenu.CanvasTransformer;
 import com.jky.lavipeditum.util.Constants;
+import com.jky.lavipeditum.util.LavipeditumPreferences;
 
 public class MainActivity extends SlidingFragmentActivity {
 
 	public SlidingMenu slidingMenu;
+	public LavipeditumPreferences preferences; //全局共享首选项
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//去除标题
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//得到全局共享首选项
+		preferences = new LavipeditumPreferences(this);
 		
 		setContentView(R.layout.main);
 		initView();

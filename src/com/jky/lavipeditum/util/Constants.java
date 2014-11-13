@@ -99,6 +99,11 @@ public class Constants {
 	public static final int MY_PAGER = 1; //我的
 	public static final int SETTING_PAGER = 0; //设置
 	
+	//数据库的保存路径
+	public static final String FILEPATH = "data/data/com.jky.lavipeditum/db/lavipeditum_region.db";
+	//数据库存放的文件夹
+	public static final String PATHSTR = "data/data/com.jky.lavipeditum/db";
+	
 }
 
 

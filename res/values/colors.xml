@@ -24,5 +24,8 @@
     <color name="login_line">#E2E3E4</color>
     <color name="regihter_text_press">#FC87A2</color>
     <color name="red">#ff0000</color>
+    <color name="shallow_gray">#EFEFEF</color>
+    <color name="dark_bg">#8000</color>
+    <color name="gray_text">#ABACAB</color>
 
 </resources>

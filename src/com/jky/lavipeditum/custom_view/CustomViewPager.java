@@ -53,7 +53,7 @@ public class CustomViewPager extends ViewPager {
 	/**
      * 解决ViewPager无法自适应高度的问题
      */
-    @Override
+    /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
       int height = 0;
@@ -71,6 +71,6 @@ public class CustomViewPager extends ViewPager {
 	
 	public void setPagingEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
+    }*/
 
 }

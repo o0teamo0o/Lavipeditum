@@ -33,22 +33,21 @@ import com.jky.lavipeditum.util.PinyinComparator;
 
 /**
  * 
- * @ClassName: AddContactsPhoneNumberActivity
- * @Description: 添加联系人电话号码
+ * @ClassName: RegisterAddCallNumberActivity
+ * @Description: 添加联系人电话号码页面
  *
  * @author o0teamo0o
  * @date 2014年10月29日 上午12:10:06
  */
-public class AddContactsPhoneNumberActivity extends BaseActivity implements OnClickListener, OnTouchingLetterChangedListener, OnItemClickListener {
+public class RegisterAddCallNumberActivity extends BaseActivity implements OnClickListener, OnTouchingLetterChangedListener, OnItemClickListener {
 
-	private ImageView iv_loading_outside;
+	private ImageView iv_loading_outside, iv_back;
 	private Timer timer;
 	private Animation animation;
 	private List<ContactInfo> infos;
 	private TextView tv_contacts_null;
 	private ListView contactsListView;
 	private SideBar sideBar;
-	private ImageView iv_back;
 	private TextView dialog;
 	private List<ContactsSortModel> sourceDateList;
 	private CharacterParser characterParser;
@@ -90,7 +89,7 @@ public class AddContactsPhoneNumberActivity extends BaseActivity implements OnCl
 
 	@Override
 	protected void initView(Bundle savedInstanceState) {
-		setContentView(R.layout.addcontactsphonenumber);
+		setContentView(R.layout.register_add_callnumber);
 		
 		iv_loading_outside = (ImageView) findViewById(R.id.iv_loading_outside); //等待进度条
 		iv_back = (ImageView) this.findViewById(R.id.iv_back);
@@ -192,7 +191,7 @@ public class AddContactsPhoneNumberActivity extends BaseActivity implements OnCl
 		new Thread(){
 			public void run() {
 				//得到联系人集合
-				ContactInfoService service = new ContactInfoService(AddContactsPhoneNumberActivity.this);
+				ContactInfoService service = new ContactInfoService(RegisterAddCallNumberActivity.this);
 				infos = service.getContactInfos();
 				//通知等待动画关闭
 				handler.sendEmptyMessage(1);
@@ -205,7 +204,7 @@ public class AddContactsPhoneNumberActivity extends BaseActivity implements OnCl
 		switch (v.getId()) {
 		//返回按钮
 		case R.id.iv_back:
-			
+			RegisterAddCallNumberActivity.this.finish();
 			break;
 		}
 	}
@@ -233,7 +232,7 @@ public class AddContactsPhoneNumberActivity extends BaseActivity implements OnCl
 		intent.putExtra("friendPhoneNumber", friendPhoneNumber);
 		setResult(Constants.CONSTACT_PAGER_RESULTCODE, intent);
 		//取消继续显示
-		AddContactsPhoneNumberActivity.this.finish();
+		RegisterAddCallNumberActivity.this.finish();
 	}
 
 }

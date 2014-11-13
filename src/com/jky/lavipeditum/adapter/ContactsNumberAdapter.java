@@ -51,7 +51,7 @@ public class ContactsNumberAdapter extends BaseAdapter {
 		ContactsSortModel mContent = contactsSortModels.get(position);
 		if(convertView == null){
 			viewHolder = new ViewHolder();
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.addcontactsnumber_item, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.register_add_callnumber_item, null);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
 			viewHolder.tvLetter = (TextView) convertView.findViewById(R.id.catalog);
 			viewHolder.tvPhone = (TextView) convertView.findViewById(R.id.tv_phone);

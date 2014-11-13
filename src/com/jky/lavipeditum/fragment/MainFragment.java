@@ -38,6 +38,7 @@ public class MainFragment extends BaseFragment{
 	private View view;
 	private CustomViewPager cvp_main_group;
 	private RadioGroup rg_mainfragment_group;
+	public static View main_darkview; //弹出popupwindow时背景变暗的视图
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -45,6 +46,7 @@ public class MainFragment extends BaseFragment{
 		
 		cvp_main_group = (CustomViewPager) view.findViewById(R.id.cvp_main_group);
 		rg_mainfragment_group = (RadioGroup) view.findViewById(R.id.rg_mainfragment_group);
+		main_darkview = view.findViewById(R.id.main_darkview); 
 		
 		return view;
 	}

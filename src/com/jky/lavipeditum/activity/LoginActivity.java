@@ -595,7 +595,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				//选择联系人
 				case R.id.rb_contacts:
 					//跳转到添加联系人页面
-					Intent intent = new Intent(LoginActivity.this, AddContactsPhoneNumberActivity.class);
+					Intent intent = new Intent(LoginActivity.this, RegisterAddCallNumberActivity.class);
 					startActivityForResult(intent, Constants.GO_CONSTACT_PAGER_REQUESTCODE);
 					//rb_contacts.setChecked(checked);
 					popupWindow.dismiss();

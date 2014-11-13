@@ -20,7 +20,7 @@
             android:src="@drawable/open_left_menu" />
 
         <CheckBox
-            android:id="@+id/city"
+            android:id="@+id/cb_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -51,9 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:layout_toEndOf="@id/city"
+            android:layout_toEndOf="@id/cb_city"
             android:layout_toLeftOf="@id/iv_saoyisao"
-            android:layout_toRightOf="@id/city"
+            android:layout_toRightOf="@id/cb_city"
             android:background="@drawable/ic_album_amount_background"
             android:drawableLeft="@drawable/ic_global_search_textbox_white_normal"
             android:drawablePadding="5dp"
@@ -71,18 +71,18 @@
         <com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager
             android:id="@+id/auto_viewPager"
             android:layout_width="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
 
         <com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:padding="10dp"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:padding="10dp" />
     </FrameLayout>
 
 </LinearLayout>

@@ -3,18 +3,32 @@ package com.jky.lavipeditum.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
+import android.os.Handler; 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import com.jky.lavipeditum.R;
+import com.jky.lavipeditum.adapter.RegionAdapter;
 import com.jky.lavipeditum.adapter.TitleAdAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
+import com.jky.lavipeditum.bean.Region;
+import com.jky.lavipeditum.engine.ReginInfoService;
 import com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager;
 import com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator;
 import com.jky.lavipeditum.util.Logger;
+import com.jky.lavipeditum.util.ScreenUtils;
 
 /**
  * 
@@ -25,12 +39,19 @@ import com.jky.lavipeditum.util.Logger;
  * @date 2014年10月24日 下午3:55:54 
  *
  */
-public class HomeFragment extends BaseFragment implements OnClickListener {
+public class HomeFragment extends BaseFragment implements OnClickListener, OnCheckedChangeListener {
 
+	protected static final int SHOW_REGION = 0;
 	private View view;
 	private ImageView lv_left_menu, iv_saoyisao;
 	private AutoScrollViewPager auto_viewPager;
 	private CirclePageIndicator indicator;
+	private CheckBox cb_city;
+	private PopupWindow cityPopupWindow;
+	private Animation animIn, animOut, lodingAnimation; //弹出popupwindow,背景变暗的动画
+	private ImageView iv_loding;
+	private ArrayList<Region> regions; //城市所对应的区域集合
+	private GridView gv_region;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -40,19 +61,54 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
 		iv_saoyisao = (ImageView) view.findViewById(R.id.iv_saoyisao);
 		auto_viewPager = (AutoScrollViewPager) view.findViewById(R.id.auto_viewPager);
 		indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
+		cb_city = (CheckBox) view.findViewById(R.id.cb_city); 
+		
 		return view;
 	}
 
 	@Override
 	public void initData(Bundle savedInstanceState) {
+		//加载popupwindow 进入和退出时的动画
+		animIn = AnimationUtils.loadAnimation(getActivity(), R.anim.popupwindow_show_in_anim);
+		animOut = AnimationUtils.loadAnimation(getActivity(), R.anim.popupwindow_show_out_anim);
+		lodingAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.common_loading_rotate);
+		
 		initAD();
+		initCityPopup();
 	}
 	
 	@Override
 	protected void initListener() {
 		lv_left_menu.setOnClickListener(this);
 		iv_saoyisao.setOnClickListener(this);
+		cb_city.setOnCheckedChangeListener(this);
 	}
+	
+	private Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			//显示当前城市的区域信息
+			case SHOW_REGION:
+				//隐藏 等待图标
+				iv_loding.clearAnimation();
+				iv_loding.setVisibility(View.GONE);
+				
+				//判断集合是否为空
+				if (regions != null) {
+					Logger.d(HomeFragment.class, "集合大小:"+regions.size());
+					//设置数据
+					RegionAdapter adapter = new RegionAdapter(getActivity(), regions);
+					gv_region.setAdapter(adapter);
+					gv_region.setVisibility(View.VISIBLE);
+				}
+				
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
 
 	/**
 	 * 
@@ -104,6 +160,76 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
 		super.onDestroy();
 		//在界面看不到的情况下停止ad广告栏停止滑动
 		auto_viewPager.stopAutoScroll();
+	}
+	
+	/**
+	 * 
+	 * Title: initCityPopup
+	 * Description:初始化城市切换界面的popupwindow
+	 */
+	private void initCityPopup() {
+		cityPopupWindow = new PopupWindow(context);
+		View view = View.inflate(context, R.layout.home_fragment_ctiy, null);
+		iv_loding = (ImageView) view.findViewById(R.id.iv_loding);
+		gv_region = (GridView) view.findViewById(R.id.gv_region);
+		
+		cityPopupWindow.setContentView(view);
+		cityPopupWindow.setBackgroundDrawable(new PaintDrawable());
+		cityPopupWindow.setFocusable(true);
+		
+		//设置高度为包裹内容
+		cityPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+		//设置宽度为手机宽度
+		cityPopupWindow.setWidth(ScreenUtils.getScreenWidth(getActivity()));
+		
+		//设置关闭监听事件
+		cityPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				MainFragment.main_darkview.startAnimation(animOut);
+				MainFragment.main_darkview.setVisibility(View.GONE);
+				cb_city.setChecked(false);
+				
+				//停止动画
+				iv_loding.clearAnimation();
+			}
+		});
+	}
+
+	/**
+	 * 左上角城市切换的选择事件
+	 */
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		//点击的城市切换按钮
+		if (isChecked) {
+			if (cityPopupWindow.isShowing()) {
+				cityPopupWindow.dismiss();
+			}else{
+				cityPopupWindow.showAsDropDown(cb_city);
+				cityPopupWindow.setAnimationStyle(-1);
+				//背景变暗
+				MainFragment.main_darkview.startAnimation(animIn);
+				MainFragment.main_darkview.setVisibility(View.VISIBLE);
+				
+				//开始动画
+				iv_loding.startAnimation(lodingAnimation);
+				
+				//开启一个子线程去查询当前城市的区
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						//查询数据库中当前城市的分区
+						String code = preferences.getRegionCode();
+						ReginInfoService reginInfoService = new ReginInfoService(getActivity());
+						regions = reginInfoService.getRegions(code);
+						handler.sendEmptyMessage(SHOW_REGION);
+					}
+				}).start();
+			}
+		}
 	}
 
 }

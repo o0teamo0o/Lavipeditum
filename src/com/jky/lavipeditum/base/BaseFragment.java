@@ -2,6 +2,7 @@ package com.jky.lavipeditum.base;
 
 import com.jky.lavipeditum.activity.MainActivity;
 import com.jky.lavipeditum.lib.slidingmenu.SlidingMenu;
+import com.jky.lavipeditum.util.LavipeditumPreferences;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,12 +24,15 @@ public abstract class BaseFragment extends Fragment {
 
 	public Context context; //初始化上下文
 	public SlidingMenu slidingmenu;
+	public LavipeditumPreferences preferences;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getActivity();
 		slidingmenu = ((MainActivity)getActivity()).slidingMenu;
+		preferences = ((MainActivity)getActivity()).preferences;
+		
 	}
 
 	@Override

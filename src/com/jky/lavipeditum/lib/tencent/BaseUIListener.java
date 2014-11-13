@@ -12,7 +12,6 @@ import com.jky.lavipeditum.base.BaseUserInfo;
 import com.jky.lavipeditum.bean.TencentUserInfo;
 import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.ToastUtil;
-import com.tencent.a.a.g;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
