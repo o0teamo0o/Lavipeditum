@@ -29,7 +29,8 @@ import com.jky.lavipeditum.custom_view.SideBar.OnTouchingLetterChangedListener;
 import com.jky.lavipeditum.engine.ContactInfoService;
 import com.jky.lavipeditum.util.CharacterParser;
 import com.jky.lavipeditum.util.Constants;
-import com.jky.lavipeditum.util.PinyinComparator;
+import com.jky.lavipeditum.util.ContactPinyinComparator;
+import com.jky.lavipeditum.util.Logger;
 
 /**
  * 
@@ -51,7 +52,7 @@ public class RegisterAddCallNumberActivity extends BaseActivity implements OnCli
 	private TextView dialog;
 	private List<ContactsSortModel> sourceDateList;
 	private CharacterParser characterParser;
-	private PinyinComparator pinyinComparator;
+	private ContactPinyinComparator contactPinyinComparator;
 	private ContactsNumberAdapter adapter;
 	
 	private Handler handler = new Handler(){
@@ -111,7 +112,7 @@ public class RegisterAddCallNumberActivity extends BaseActivity implements OnCli
 		sourceDateList = filledData(contactNames);
 		
 		//根据a-z进行排序源数据
-		Collections.sort(sourceDateList,pinyinComparator);
+		Collections.sort(sourceDateList, contactPinyinComparator);
 		adapter = new ContactsNumberAdapter(this, sourceDateList);
 		contactsListView.setAdapter(adapter);
 	}
@@ -119,7 +120,7 @@ public class RegisterAddCallNumberActivity extends BaseActivity implements OnCli
 	@Override
 	protected void initData() {
 		characterParser = CharacterParser.getInstance(); //实例化汉字转换拼音类
-		pinyinComparator = new PinyinComparator(); //处理名字中带"#,@"的情况
+		contactPinyinComparator = new ContactPinyinComparator(); //处理名字中带"#,@"的情况
 		
 		lodingAnimation();
 		lodingContactsInfo();

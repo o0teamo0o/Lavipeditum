@@ -1,5 +1,7 @@
 package com.jky.lavipeditum.bean;
 
+import java.io.Serializable;
+
 /**
  * 
  * @ClassName: Region 
@@ -9,8 +11,10 @@ package com.jky.lavipeditum.bean;
  * @date 2014年11月13日 下午11:12:55 
  *
  */
-public class Region {
+public class Region implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private int id; //id 无太大用处
 	private String code; //编码
 	private String parentId; //用于查询的主要条件

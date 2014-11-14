@@ -92,6 +92,8 @@ public class Constants {
 	public static final int LOGIN_BACK_RESULTCOCE = -1; //在登陆界面按返回的返回值
 	public static final int GO_CONSTACT_PAGER_REQUESTCODE = 01; //注册页面跳转到添加联系人号码界面的请求code
 	public static final int CONSTACT_PAGER_RESULTCODE = 11; //联系人返回的界面
+	public static final int GO_LOCATION_CITY_REQUESTCODE = 02; //主界面弹出的popupwindow跳转到定位界面
+	public static final int LOCATION_CITY_RESULTCOCE = 12; //定位城市返回值
 	
 	//主界面的四个页面
 	public static final int HOME_PAGER = 3; //主页

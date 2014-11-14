@@ -18,11 +18,11 @@ import com.jky.lavipeditum.db.CreateLocalDB;
  * @date 2014年11月13日 下午11:04:58 
  *
  */
-public class ReginInfoService {
+public class RegionInfoService {
 
 	private SQLiteDatabase db;
 	
-	public ReginInfoService(Context context) {
+	public RegionInfoService(Context context) {
 		this.db = new CreateLocalDB().openDatabase(context);
 	}
 	

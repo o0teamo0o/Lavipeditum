@@ -3,6 +3,7 @@ package com.jky.lavipeditum.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.os.Handler; 
@@ -18,15 +19,19 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.jky.lavipeditum.R;
+import com.jky.lavipeditum.activity.LocationCityActivity;
 import com.jky.lavipeditum.adapter.RegionAdapter;
 import com.jky.lavipeditum.adapter.TitleAdAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
+import com.jky.lavipeditum.bean.CitySortModel;
 import com.jky.lavipeditum.bean.Region;
-import com.jky.lavipeditum.engine.ReginInfoService;
+import com.jky.lavipeditum.engine.RegionInfoService;
 import com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager;
 import com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator;
+import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.ScreenUtils;
 
@@ -52,6 +57,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 	private ImageView iv_loding;
 	private ArrayList<Region> regions; //城市所对应的区域集合
 	private GridView gv_region;
+	private TextView tv_city_change;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -82,6 +88,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		lv_left_menu.setOnClickListener(this);
 		iv_saoyisao.setOnClickListener(this);
 		cb_city.setOnCheckedChangeListener(this);
+		tv_city_change.setOnClickListener(this);
 	}
 	
 	private Handler handler = new Handler(){
@@ -152,7 +159,29 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		case R.id.iv_saoyisao:
 			
 			break;
+		//切换城市
+		case R.id.tv_city_change:
+			Intent intent = new Intent(getActivity(), LocationCityActivity.class);
+			getParentFragment().startActivityForResult(intent, Constants.GO_LOCATION_CITY_REQUESTCODE);
+			break;
 		}
+	}
+	
+	/**
+	 * 
+	 * Title: getResultData
+	 * Description: 提供给父fragment来访问 
+	 * 用意就是想子fragment接收不到onActivityResult时，让父fragment传递过来参数
+	 * @param data
+	 */
+	public void getResultData(Intent data){
+		CitySortModel city = (CitySortModel) data.getSerializableExtra("city");
+		//保存数据到共享首选项
+		preferences.setCityRegionCode(city.getCode());
+		//修改城市标题文字
+		cb_city.setText(city.getName());
+		//把popupwindow关闭
+		cityPopupWindow.dismiss();
 	}
 	
 	@Override
@@ -172,6 +201,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		View view = View.inflate(context, R.layout.home_fragment_ctiy, null);
 		iv_loding = (ImageView) view.findViewById(R.id.iv_loding);
 		gv_region = (GridView) view.findViewById(R.id.gv_region);
+		tv_city_change = (TextView) view.findViewById(R.id.tv_city_change);
 		
 		cityPopupWindow.setContentView(view);
 		cityPopupWindow.setBackgroundDrawable(new PaintDrawable());
@@ -222,8 +252,8 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 					@Override
 					public void run() {
 						//查询数据库中当前城市的分区
-						String code = preferences.getRegionCode();
-						ReginInfoService reginInfoService = new ReginInfoService(getActivity());
+						String code = preferences.getCityRegionCode();
+						RegionInfoService reginInfoService = new RegionInfoService(getActivity());
 						regions = reginInfoService.getRegions(code);
 						handler.sendEmptyMessage(SHOW_REGION);
 					}
@@ -231,5 +261,4 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 			}
 		}
 	}
-
 }

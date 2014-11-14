@@ -110,7 +110,6 @@ public class SideBar extends View {
 
 	/**
 	 * 向外公开的方法
-	 * 
 	 * @param onTouchingLetterChangedListener
 	 */
 	public void setOnTouchingLetterChangedListener(
@@ -120,9 +119,7 @@ public class SideBar extends View {
 
 	/**
 	 * 接口
-	 * 
-	 * @author coder
-	 * 
+	 * @author o0teamo0o
 	 */
 	public interface OnTouchingLetterChangedListener {
 		public void onTouchingLetterChanged(String s);

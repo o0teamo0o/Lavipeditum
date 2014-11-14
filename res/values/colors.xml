@@ -27,5 +27,6 @@
     <color name="shallow_gray">#EFEFEF</color>
     <color name="dark_bg">#8000</color>
     <color name="gray_text">#ABACAB</color>
+    <color name="gray_background">#F0F0F0</color>
 
 </resources>

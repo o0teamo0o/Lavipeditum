@@ -64,6 +64,9 @@
         <activity android:name="com.jky.lavipeditum.activity.LoginActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         
+        <!-- 定位城市activity -->
+        <activity android:name="com.jky.lavipeditum.activity.LocationCityActivity" />
+        
         <!-- 查询联系人的activity -->
         <activity android:name="com.jky.lavipeditum.activity.RegisterAddCallNumberActivity" />
         

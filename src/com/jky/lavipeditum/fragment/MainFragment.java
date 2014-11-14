@@ -39,6 +39,7 @@ public class MainFragment extends BaseFragment{
 	private CustomViewPager cvp_main_group;
 	private RadioGroup rg_mainfragment_group;
 	public static View main_darkview; //弹出popupwindow时背景变暗的视图
+	private HomeFragment homeFragment;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -109,6 +110,8 @@ public class MainFragment extends BaseFragment{
 			RadioButton changeButton = (RadioButton) rg_mainfragment_group.getChildAt(currentItem);
 			changeButton.setChecked(true);
 			rg_mainfragment_group.invalidate();
+		}else if (resultCode == Constants.LOCATION_CITY_RESULTCOCE) {
+			homeFragment.getResultData(data);
 		}
 	}
 
@@ -133,7 +136,7 @@ public class MainFragment extends BaseFragment{
 		mainFragments.add(hereaboutFragment);
 
 		// 主页
-		HomeFragment homeFragment = new HomeFragment();
+		homeFragment = new HomeFragment();
 		mainFragments.add(homeFragment);
 		
 		return mainFragments;

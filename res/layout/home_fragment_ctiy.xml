@@ -27,7 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fadingEdge="none"
-            android:gravity="center"
+            android:gravity="center" 
+            android:cacheColorHint="#00000000"
+            android:stretchMode="columnWidth"
             android:listSelector="@android:color/transparent"
             android:numColumns="3"
             android:visibility="gone" />
@@ -59,6 +61,7 @@
                 android:text="长沙" />
 
             <TextView
+                android:id="@+id/tv_city_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
