@@ -41,6 +41,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -98,7 +99,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private LinearLayout ll_register, ll_login;
 	private TextView tv_go_login, tv_unreceive_identify, tv_identify_notify, tv_phone;
 	private CustomViewPager cvp_register;
-	private TextView tv_login_weibo, tv_qq_login; //微博,QQ登陆按钮
+	private TextView tv_login_weibo, tv_qq_login, tv_seller_login; //微博,QQ登陆按钮
+	private ImageView iv_back;
 	private WeiboAuth weiboAuth; //微博 Web 授权类，提供登陆等功能
 	private SsoHandler ssoHandler; //注意：SsoHandler 仅当 SDK 支持 SSO 时有效
 	private Oauth2AccessToken accessToken; //装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
@@ -131,10 +133,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		ll_login = (LinearLayout) this.findViewById(R.id.ll_login);
 		tv_go_login = (TextView) this.findViewById(R.id.tv_go_login);
 		tv_login_weibo = (TextView) this.findViewById(R.id.tv_login_weibo);
+		tv_seller_login = (TextView) this.findViewById(R.id.tv_seller_login);
 		tv_qq_login = (TextView) this.findViewById(R.id.tv_qq_login);
 		bb_login = (BootstrapButton) this.findViewById(R.id.bb_login);
 		cet_username = (ClearEditText) this.findViewById(R.id.cet_username);
 		cet_pwd = (ClearEditText) this.findViewById(R.id.cet_pwd);
+		iv_back = (ImageView) this.findViewById(R.id.iv_back);
 		
 		cvp_register = (CustomViewPager) this.findViewById(R.id.cvp_register);
 	}
@@ -154,6 +158,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		tv_login_weibo.setOnClickListener(this);
 		tv_qq_login.setOnClickListener(this);
 		bb_login.setOnClickListener(this);
+		tv_seller_login.setOnClickListener(this);
+		iv_back.setOnClickListener(this);
 		
 		cvp_register.setOnTouchListener(new OnTouchListener() {
 			
@@ -242,6 +248,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		//返回
+		case R.id.iv_back:
+			intent = new Intent();
+			setResult(Constants.LOGIN_BACK_RESULTCOCE, intent);
+			LoginActivity.this.finish();
+			break;
 		// 去注册
 		case R.id.tv_go_register:
 			if (!showRegister) {
@@ -308,6 +320,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}else if (TextUtils.isEmpty(password)) {
 				setAlertDialogs = cet_pwd.setAlertDialog(LoginActivity.this, "密码不能为空!");
 			}
+			
+			//去服务器验证
+			
+			//验证通过之后跳转
+			loginSuccess();
 			break;
 		//获取验证码
 		case R.id.bb_identifying:
@@ -328,7 +345,26 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			//提交验证码
 			SMSSDK.submitVerificationCode(Constants.SMS_COUNTRY_ID, callNumber, provingNumber);
 			break;
+		//商家登陆
+		case R.id.tv_seller_login:
+			//跳转到商家登陆界面
+			intent = new Intent(LoginActivity.this, SellerLoginActivity.class);
+			startActivityForResult(intent, Constants.GO_SELLER_LOGIN_REQUESTCODE);
+			break;
 		}
+	}
+
+	/**
+	 * 
+	 * Title: loginSuccess
+	 * Description:登陆成之后的跳转
+	 */
+	private void loginSuccess() {
+		Intent intent = new Intent();
+		intent.putExtra("seller", false);
+		setResult(Constants.LOGIN_SUCCESS, intent);
+		LavipeditumApplication.isLogin = true;
+		LoginActivity.this.finish();
 	}
 
 	/**
@@ -946,6 +982,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		if (ssoHandler != null) {
 			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 		}
+		
 		//腾讯授权登陆
 		if (requestCode == Constants.TENCENT_REQUEST_API) {
 			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
@@ -953,12 +990,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				Logger.d(LoginActivity.class, "onActivityResult handle logindata");
 			}
 		}
+		
 		//app内应用登陆
-		else if (requestCode == Constants.TENCENT_REQUEST_APPBAR) {
+		if (requestCode == Constants.TENCENT_REQUEST_APPBAR) {
 			if (resultCode == Constants.TENCENT_RESULT_LOGIN) {
 				updateUserInfo();
 			}
 		}
+		
 		//判断是否是联系人页面的返回
 		if (resultCode == Constants.CONSTACT_PAGER_RESULTCODE) {
 			if (data != null) {
@@ -968,6 +1007,23 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				//最终设置给控件
 				cet_regihter_phone.setText(callNumber);
 			}
+		}
+		
+		//判断是否是从商家界面跳转回来
+		else if (resultCode == Constants.SELLER_LOGIN_BACK_REQUESTCODE) {
+			Intent intent = new Intent();
+			setResult(Constants.LOGIN_BACK_RESULTCOCE, intent);
+			LoginActivity.this.finish();
+		}
+		
+		//商家登陆成功之后的界面跳转回来
+		else if (resultCode == Constants.SELLER_LOGIN_SUCCESS) {
+			Intent intent = new Intent();
+			boolean seller = data.getBooleanExtra(Constants.SELLER, true);
+			intent.putExtra(Constants.SELLER, seller);
+			setResult(Constants.SELLER_LOGIN_SUCCESS, intent);
+			LoginActivity.this.finish();
+			
 		}
 	}
 
@@ -1020,6 +1076,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	};
+	private Intent intent;
 	
 	/**
 	 * 

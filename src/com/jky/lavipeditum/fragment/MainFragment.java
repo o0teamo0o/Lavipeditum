@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.net.VpnService;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -22,7 +19,6 @@ import com.jky.lavipeditum.adapter.MainFrameAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.util.Constants;
-import com.jky.lavipeditum.util.Logger;
 
 /**
  * 
@@ -40,6 +36,8 @@ public class MainFragment extends BaseFragment{
 	private RadioGroup rg_mainfragment_group;
 	public static View main_darkview; //弹出popupwindow时背景变暗的视图
 	private HomeFragment homeFragment;
+	private boolean seller;
+	private MyFragment myFragment;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -59,6 +57,7 @@ public class MainFragment extends BaseFragment{
 		cvp_main_group.setAdapter(adapter);
 		//默认显示第主页
 		cvp_main_group.setCurrentItem(Constants.HOME_PAGER);
+		cvp_main_group.setOffscreenPageLimit(1);
 	}
 
 	@Override
@@ -80,8 +79,8 @@ public class MainFragment extends BaseFragment{
 					break;
 				//我的
 				case R.id.rb_my:
-					//判断是否登陆， 如果没有登陆应该先进入登陆界面
-					if (LavipeditumApplication.isLogin) {
+					//判断是否用户登陆或者商家登陆， 如果没有登陆应该先进入登陆界面
+					if (LavipeditumApplication.isLogin || LavipeditumApplication.isSellerLogin) {
 						cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
 					}else{
 						Intent intent = new Intent(context, LoginActivity.class);
@@ -102,16 +101,29 @@ public class MainFragment extends BaseFragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (resultCode == Constants.LOGIN_RETURN_RESULTCODE && LavipeditumApplication.isLogin) {
+		//如果是普通用户登陆成功
+		if (resultCode == Constants.LOGIN_SUCCESS && LavipeditumApplication.isLogin) {
 			cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
-		}else if (resultCode == Constants.LOGIN_BACK_RESULTCOCE) {
+		}
+		
+		//判断是否是的登陆界面返回
+		else if (resultCode == Constants.LOGIN_BACK_RESULTCOCE) {
 			//先判断一下当前viewpager当前显示的是那个下标
 			int currentItem = cvp_main_group.getCurrentItem();
 			RadioButton changeButton = (RadioButton) rg_mainfragment_group.getChildAt(currentItem);
 			changeButton.setChecked(true);
 			rg_mainfragment_group.invalidate();
-		}else if (resultCode == Constants.LOCATION_CITY_RESULTCOCE) {
+		}
+		
+		//判断是否是定位城市返回的值
+		else if (resultCode == Constants.LOCATION_CITY_RESULTCOCE) {
 			homeFragment.getResultData(data);
+		}
+		
+		//判断是否是商家登陆成功的返回值
+		else if (resultCode == Constants.SELLER_LOGIN_SUCCESS  && LavipeditumApplication.isSellerLogin) {
+			seller = data.getBooleanExtra(Constants.SELLER, true);
+			cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
 		}
 	}
 
@@ -128,7 +140,7 @@ public class MainFragment extends BaseFragment{
 		mainFragments.add(settingFragment);
 
 		// 我的
-		MyFragment myFragment = new MyFragment();
+		myFragment = new MyFragment();
 		mainFragments.add(myFragment);
 
 		// 附近

@@ -86,14 +86,20 @@ public class Constants {
 	
 	public static final String MAIN_FRAGMENT_NAME = "MainFragment"; //主界面fragment
 	public static final String LEFT_FRAGMENT_NAME = "LeftMenuFragment"; //左边菜单栏fragment
+
+	public static final String SELLER = "seller"; //商人
 	
 	public static final int GO_LOGIN_REQUESTCODE = 00; //主界面跳转到登陆界面的请求code
 	public static final int LOGIN_RETURN_RESULTCODE = 10;  //登陆返回信息
 	public static final int LOGIN_BACK_RESULTCOCE = -1; //在登陆界面按返回的返回值
+	public static final int LOGIN_SUCCESS = 100; //登陆成功之后的返回值
 	public static final int GO_CONSTACT_PAGER_REQUESTCODE = 01; //注册页面跳转到添加联系人号码界面的请求code
 	public static final int CONSTACT_PAGER_RESULTCODE = 11; //联系人返回的界面
-	public static final int GO_LOCATION_CITY_REQUESTCODE = 02; //主界面弹出的popupwindow跳转到定位界面
+	public static final int LOCATION_CITY_BACK_REQUESTCODE = 02; //主界面弹出的popupwindow跳转到定位界面
 	public static final int LOCATION_CITY_RESULTCOCE = 12; //定位城市返回值
+	public static final int GO_SELLER_LOGIN_REQUESTCODE = 13; //跳转到商家登陆界面
+	public static final int SELLER_LOGIN_BACK_REQUESTCODE = 03; //商家登陆界面返回值
+	public static final int SELLER_LOGIN_SUCCESS = 103; //商家登陆成功的返回值
 	
 	//主界面的四个页面
 	public static final int HOME_PAGER = 3; //主页

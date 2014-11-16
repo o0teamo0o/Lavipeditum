@@ -247,10 +247,12 @@ public class LocationCityActivity extends BaseActivity implements OnTouchingLett
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		CitySortModel city = sourceDateList.get(position);
+		
 		Intent intent = new Intent();
 		intent.putExtra("city", city);
 		System.out.println("cityName:" + city.getName());
 		setResult(Constants.LOCATION_CITY_RESULTCOCE, intent);
+		
 		LocationCityActivity.this.finish();
 	}
 

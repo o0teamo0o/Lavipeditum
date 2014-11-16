@@ -74,6 +74,10 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 
 	@Override
 	public void initData(Bundle savedInstanceState) {
+		//初始化定位的城市信息
+		String cityName = preferences.getCityName();
+		cb_city.setText(cityName);
+		
 		//加载popupwindow 进入和退出时的动画
 		animIn = AnimationUtils.loadAnimation(getActivity(), R.anim.popupwindow_show_in_anim);
 		animOut = AnimationUtils.loadAnimation(getActivity(), R.anim.popupwindow_show_out_anim);
@@ -116,6 +120,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 			}
 		};
 	};
+	private TextView tv_current_city;
 
 	/**
 	 * 
@@ -162,7 +167,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		//切换城市
 		case R.id.tv_city_change:
 			Intent intent = new Intent(getActivity(), LocationCityActivity.class);
-			getParentFragment().startActivityForResult(intent, Constants.GO_LOCATION_CITY_REQUESTCODE);
+			getParentFragment().startActivityForResult(intent, Constants.LOCATION_CITY_BACK_REQUESTCODE);
 			break;
 		}
 	}
@@ -178,8 +183,13 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		CitySortModel city = (CitySortModel) data.getSerializableExtra("city");
 		//保存数据到共享首选项
 		preferences.setCityRegionCode(city.getCode());
+		//把城市名称存储起来
+		preferences.setCityName(city.getName());
+		
 		//修改城市标题文字
 		cb_city.setText(city.getName());
+		//设置popupwindow上的当前城市定位
+		tv_current_city.setText(city.getName());
 		//把popupwindow关闭
 		cityPopupWindow.dismiss();
 	}
@@ -202,6 +212,12 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 		iv_loding = (ImageView) view.findViewById(R.id.iv_loding);
 		gv_region = (GridView) view.findViewById(R.id.gv_region);
 		tv_city_change = (TextView) view.findViewById(R.id.tv_city_change);
+		tv_current_city = (TextView) view.findViewById(R.id.tv_current_city);
+		
+		String cityName = preferences.getCityName();
+		Logger.d(HomeFragment.class, cityName);
+		//设置popupwindow上的当前城市定位
+		tv_current_city.setText(cityName);
 		
 		cityPopupWindow.setContentView(view);
 		cityPopupWindow.setBackgroundDrawable(new PaintDrawable());

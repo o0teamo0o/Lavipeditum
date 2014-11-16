@@ -1,6 +1,5 @@
 package com.jky.lavipeditum.activity;
 
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.Window;

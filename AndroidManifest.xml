@@ -70,6 +70,9 @@
         <!-- 查询联系人的activity -->
         <activity android:name="com.jky.lavipeditum.activity.RegisterAddCallNumberActivity" />
         
+        <!-- 商家登陆的activity -->
+        <activity android:name="com.jky.lavipeditum.activity.SellerLoginActivity" />
+        
         <!-- 短信sdk需要的acitivity -->
         <activity
 		   android:name="cn.smssdk.SMSSDKUIShell"

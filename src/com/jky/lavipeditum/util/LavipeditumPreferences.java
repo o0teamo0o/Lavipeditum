@@ -42,6 +42,26 @@ public class LavipeditumPreferences {
 	
 	/**
 	 * 
+	 * Title: setCityName
+	 * Description: 保存城市名称
+	 * @param cityName
+	 */
+	public void setCityName(String cityName){
+		preferences.edit().putString("cityName", cityName).commit();
+	}
+	
+	/**
+	 * 
+	 * Title: getCityName
+	 * Description: 获取保存的城市信息 
+	 * @return
+	 */
+	public String getCityName(){
+		return preferences.getString("cityName", "长沙");
+	}
+	
+	/**
+	 * 
 	 * Title: getProvinceCode
 	 * Description: 返回当前保存的省份code 默认是湖南省
 	 * @return
