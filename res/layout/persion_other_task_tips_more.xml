@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/my_ll_other"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apk_all_spreadkuang"
+        android:orientation="vertical"
+        android:paddingBottom="1.0dip"
+        android:paddingTop="1.0dip" >
+
+        <RelativeLayout
+            android:id="@+id/rl_predetermine"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/apk_all_white_selector"
+            android:clickable="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" >
+
+            <TextView
+                android:id="@+id/tv_black_figure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/apk_mine_darily"
+                android:drawablePadding="15dp"
+                android:gravity="center"
+                android:text="我的余额"
+                android:textColor="#ff6c6155"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:contentDescription="@null"
+                android:src="@drawable/apk_all_rightarrow" />
+        </RelativeLayout>
+
+        <View
+            style="@style/divider"
+            android:layout_marginLeft="58.0dip" />
+
+        <RelativeLayout
+            android:id="@+id/rl_favorite"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/apk_all_white_selector"
+            android:clickable="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" >
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/apk_mine_collect"
+                android:drawablePadding="15dp"
+                android:gravity="center"
+                android:text="我的收藏"
+                android:textColor="#ff6c6155"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/apk_all_rightarrow" />
+        </RelativeLayout>
+
+        <View
+            style="@style/divider"
+            android:layout_marginLeft="58.0dip" />
+
+        <RelativeLayout
+            android:id="@+id/rl_consume"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/apk_all_white_selector"
+            android:clickable="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" >
+
+            <TextView
+                android:id="@+id/tv_consumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/apk_mine_topic"
+                android:drawablePadding="15dp"
+                android:gravity="center"
+                android:text="我的消费"
+                android:textColor="#ff6c6155"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/apk_all_rightarrow" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_coupon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/apk_all_spread_kuang_selector"
+        android:clickable="true"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" >
+
+        <TextView
+            android:id="@+id/tv_preferential"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/apk_mine_coin"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:text="我的优惠劵"
+            android:textColor="#ff6c6155"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/ivRightArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/apk_all_rightarrow" />
+
+        <TextView
+            android:id="@+id/tvNewAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/ivRightArrow"
+            android:gravity="right|center"
+            android:singleLine="true"
+            android:textColor="#ffa09a95"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvUCoinNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/tv_preferential"
+            android:background="@drawable/apk_all_newsbigbg_nine"
+            android:gravity="center_horizontal"
+            android:text="new"
+            android:textColor="@android:color/white"
+            android:textIsSelectable="false"
+            android:textSize="10dip"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_set"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/apk_all_spread_kuang_selector"
+        android:clickable="true"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tvSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/apk_mine_set"
+                android:drawablePadding="15dp"
+                android:gravity="center"
+                android:text="设置"
+                android:textColor="#ff6c6155"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvSettingDot"
+                android:layout_width="10dip"
+                android:layout_height="10dip"
+                android:layout_marginLeft="32.0dip"
+                android:background="@drawable/apk_all_newsbg"
+                android:gravity="left"
+                android:textColor="#ffffffff"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/apk_all_rightarrow" />
+    </RelativeLayout>
+
+</LinearLayout>

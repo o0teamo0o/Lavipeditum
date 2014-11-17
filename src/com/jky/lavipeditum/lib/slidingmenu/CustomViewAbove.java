@@ -870,7 +870,12 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		super.dispatchDraw(canvas);
+		if (canvas != null ) {
+			super.dispatchDraw(canvas);
+		}else{
+			canvas = new Canvas();
+			super.dispatchDraw(canvas);
+		}
 		// Draw the margin drawable if needed.
 		mViewBehind.drawShadow(mContent, canvas);
 		mViewBehind.drawFade(mContent, canvas, getPercentOpen());

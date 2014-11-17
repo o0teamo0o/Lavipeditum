@@ -18,6 +18,7 @@ import com.jky.lavipeditum.activity.LoginActivity;
 import com.jky.lavipeditum.adapter.MainFrameAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
+import com.jky.lavipeditum.custom_view.DirectionalViewPager;
 import com.jky.lavipeditum.util.Constants;
 
 /**
@@ -32,7 +33,7 @@ import com.jky.lavipeditum.util.Constants;
 public class MainFragment extends BaseFragment{
 
 	private View view;
-	private CustomViewPager cvp_main_group;
+	private DirectionalViewPager cvp_main_group;
 	private RadioGroup rg_mainfragment_group;
 	public static View main_darkview; //弹出popupwindow时背景变暗的视图
 	private HomeFragment homeFragment;
@@ -43,7 +44,7 @@ public class MainFragment extends BaseFragment{
 	public View initView(LayoutInflater inflater) {
 		view = inflater.inflate(R.layout.main_frame, null);
 		
-		cvp_main_group = (CustomViewPager) view.findViewById(R.id.cvp_main_group);
+		cvp_main_group = (DirectionalViewPager) view.findViewById(R.id.cvp_main_group);
 		rg_mainfragment_group = (RadioGroup) view.findViewById(R.id.rg_mainfragment_group);
 		main_darkview = view.findViewById(R.id.main_darkview); 
 		

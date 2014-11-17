@@ -22,4 +22,11 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
     
+    <!-- 分割线样式 -->
+    <style name="divider">
+        <item name="android:background">@drawable/apk_all_lineone</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1.0px</item>
+    </style>
+    
 </resources>

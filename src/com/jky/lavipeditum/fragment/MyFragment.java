@@ -3,9 +3,9 @@ package com.jky.lavipeditum.fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.jky.lavipeditum.LavipeditumApplication;
+import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseFragment;
 
 /**
@@ -18,18 +18,19 @@ import com.jky.lavipeditum.base.BaseFragment;
  *
  */
 public class MyFragment extends BaseFragment {
+	
+	private View view;
 
 	@Override
 	protected View initView(LayoutInflater inflater) {
-		TextView tv = new TextView(getActivity());
 		if (LavipeditumApplication.isLogin) {
-			tv.setText("普通用户登陆");
+			view = inflater.inflate(R.layout.my_client_fragment, null);
 		}else if (LavipeditumApplication.isSellerLogin) {
-			tv.setText("商业用户登陆");
+			
 		}else{
-			tv.setText("默认页面");
+			view = inflater.inflate(R.layout.my_client_fragment, null);
 		}
-		return tv;
+		return view;
 	}
 
 	@Override

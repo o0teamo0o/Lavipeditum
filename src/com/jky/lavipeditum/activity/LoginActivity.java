@@ -3,7 +3,6 @@ package com.jky.lavipeditum.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,9 +46,9 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -62,6 +61,7 @@ import com.jky.lavipeditum.custom.Rotate3dAnimation;
 import com.jky.lavipeditum.custom_view.BootstrapButton;
 import com.jky.lavipeditum.custom_view.ClearEditText;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
+import com.jky.lavipeditum.custom_view.DirectionalViewPager;
 import com.jky.lavipeditum.lib.tencent.BaseUIListener;
 import com.jky.lavipeditum.lib.weibo.openapi.models.User;
 import com.jky.lavipeditum.util.Constants;
@@ -85,7 +85,7 @@ import com.tencent.tauth.UiError;
 
 /**
  * 
- * @ClassName: LoginActivity
+ * @ClassName: LoginActivity 
  * @Description: 登陆的界面 
  *
  * @author o0teamo0o
@@ -461,8 +461,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			//操作表示成功
 			if (result == SMSSDK.RESULT_COMPLETE) {
 				Logger.v(LoginActivity.class, "成功!");
-				if (cvp_register.getCurrentItem() != 1) {
-					handler.sendEmptyMessage(CHANGE_PAGE);
+				if (cvp_register.getCurrentItem() != 1) { 
+					handler.sendEmptyMessage(CHANGE_PAGE); 
 				}
 				switch (event) {
 				//返回支持发送验证码的国家列表

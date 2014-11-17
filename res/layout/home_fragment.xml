@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,10 +31,10 @@
             android:drawableEnd="@drawable/city_change"
             android:drawablePadding="5dp"
             android:drawableRight="@drawable/city_change"
+            android:maxLength="3"
             android:padding="5dp"
             android:singleLine="true"
-            android:maxLength="3"
-            android:text="@string/city_name" 
+            android:text="@string/city_name"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
@@ -65,26 +65,37 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_ad_frame"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" >
 
-        <com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager
-            android:id="@+id/auto_viewPager"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp" />
+            android:orientation="vertical" >
 
-        <com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="10dp"
-            android:padding="10dp" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/fl_ad_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager
+                    android:id="@+id/auto_viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp" />
+
+                <com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="10dp"
+                    android:padding="10dp" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
