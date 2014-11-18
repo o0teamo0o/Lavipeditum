@@ -18,12 +18,12 @@ import com.jky.lavipeditum.custom.Rotate3dAnimation;
 
 /**
  * 
-* @ClassName: LoginFragment
-* @Description: 用于登陆和注册的界面
+ * @ClassName: LoginFragment
+ * @Description: 用于登陆和注册的界面
 
-* @author o0teamo0o
-* @date 2014年10月26日 下午9:15:50
-*
+ * @author o0teamo0o
+ * @date 2014年10月26日 下午9:15:50
+ *
  */
 public class LoginFragment extends BaseFragment implements OnClickListener {
 
@@ -35,7 +35,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener {
 	private TextView tv_go_login;
 
 	@Override
-	protected View initView(LayoutInflater inflater) {
+	protected View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.login_frame, null);
 		
 		container = (ViewGroup) view.findViewById(R.id.container);

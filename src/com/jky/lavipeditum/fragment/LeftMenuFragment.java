@@ -19,7 +19,7 @@ import com.jky.lavipeditum.base.BaseFragment;
 public class LeftMenuFragment extends BaseFragment {
 
 	@Override
-	public View initView(LayoutInflater inflater) {
+	public View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		TextView tv = new TextView(getActivity());
 		tv.setText(LeftMenuFragment.class.getSimpleName());
 		return tv;

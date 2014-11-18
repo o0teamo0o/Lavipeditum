@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="门店基本信息："
+            android:textColor="@color/main_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/wb_personal_item_full_normal"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <com.jky.lavipeditum.custom_view.ClearEditText
+                    android:id="@+id/cet_username"
+                    android:layout_width="@dimen/login_editview_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dip"
+                    android:layout_marginRight="10dip"
+                    android:background="@null"
+                    android:hint="@string/username_hint"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/main_color"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_line"
+                    style="@style/login_editview"
+                    android:layout_toLeftOf="@id/cet_username"
+                    android:layout_toStartOf="@id/cet_username"
+                    android:contentDescription="@null"
+                    android:src="@drawable/wb_infolist_tab_divider_small_version" />
+
+                <TextView
+                    style="@style/login_editview"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/iv_line"
+                    android:layout_toStartOf="@id/iv_line"
+                    android:text="门店名称"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dip"
+                android:background="@color/login_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <com.jky.lavipeditum.custom_view.ClearEditText
+                    android:id="@+id/cet_pwd"
+                    android:layout_width="@dimen/login_editview_width"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dip"
+                    android:layout_marginRight="10dip"
+                    android:background="@null"
+                    android:hint="@string/password_hint"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/main_color"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_psw_line"
+                    style="@style/login_editview"
+                    android:layout_toLeftOf="@id/cet_pwd"
+                    android:layout_toStartOf="@id/cet_pwd"
+                    android:contentDescription="@null"
+                    android:src="@drawable/wb_infolist_tab_divider_small_version" />
+
+                <TextView
+                    style="@style/login_editview"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/iv_psw_line"
+                    android:layout_toStartOf="@id/iv_psw_line"
+                    android:text="门店电话"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
+            android:text="门店详细地址："
+            android:textColor="@color/main_color" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/comment_dialog_cancel_normal"
+            android:gravity="left|top"
+            android:lines="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
+            android:text="店铺信息描述："
+            android:textColor="@color/main_color" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/comment_dialog_cancel_normal"
+            android:gravity="left|top"
+            android:lines="5" />
+
+        <com.jky.lavipeditum.custom_view.BootstrapButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:text="下一步"
+            android:textSize="16sp"
+            bootstrapbutton:bb_roundedCorners="true"
+            bootstrapbutton:bb_size="default"
+            bootstrapbutton:bb_text_gravity="center"
+            bootstrapbutton:bb_type="primary" />
+    </LinearLayout>
+
+</ScrollView>

@@ -1179,6 +1179,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		if (smsEventHandler != null) {
 			SMSSDK.unregisterEventHandler(smsEventHandler);
 		}
+		//关闭弹出的dialog
+		if (setAlertDialogs != null) {
+			for (PopupWindow p : setAlertDialogs) {
+				p.dismiss();
+			}
+		}
 	}
 
 }

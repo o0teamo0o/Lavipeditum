@@ -161,6 +161,10 @@ public class DirectionalViewPager extends ViewPager {
 	public PagerAdapter getAdapter() {
 		return mAdapter;
 	}
+	
+	public int getCurrentItem() {
+        return mCurItem;
+    }
 
 	public void setCurrentItem(int item) {
 		mPopulatePending = false;

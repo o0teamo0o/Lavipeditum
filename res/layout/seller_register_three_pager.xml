@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dip"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="门店所在方位："
+            android:textColor="@color/main_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/region_bg_selector"
+                android:button="@null"
+                android:drawableLeft="@drawable/ic_category_all"
+                android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="城市" />
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/region_bg_selector"
+                android:button="@null"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="区域" />
+
+            <CheckBox
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/region_bg_selector"
+                android:button="@null"
+                android:drawableLeft="@drawable/ic_order"
+                android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="商圈" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

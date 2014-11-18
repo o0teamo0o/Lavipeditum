@@ -19,7 +19,12 @@ import com.jky.lavipeditum.adapter.MainFrameAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.custom_view.CustomViewPager;
 import com.jky.lavipeditum.custom_view.DirectionalViewPager;
+import com.jky.lavipeditum.fragment.first.HereaboutFragment;
+import com.jky.lavipeditum.fragment.first.HomeFragment;
+import com.jky.lavipeditum.fragment.first.MyFragment;
+import com.jky.lavipeditum.fragment.first.SettingFragment;
 import com.jky.lavipeditum.util.Constants;
+import com.jky.lavipeditum.util.Logger;
 
 /**
  * 
@@ -41,7 +46,7 @@ public class MainFragment extends BaseFragment{
 	private MyFragment myFragment;
 
 	@Override
-	public View initView(LayoutInflater inflater) {
+	public View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.main_frame, null);
 		
 		cvp_main_group = (DirectionalViewPager) view.findViewById(R.id.cvp_main_group);
@@ -119,11 +124,14 @@ public class MainFragment extends BaseFragment{
 		//判断是否是定位城市返回的值
 		else if (resultCode == Constants.LOCATION_CITY_RESULTCOCE) {
 			homeFragment.getResultData(data);
-		}
+		} 
 		
 		//判断是否是商家登陆成功的返回值
 		else if (resultCode == Constants.SELLER_LOGIN_SUCCESS  && LavipeditumApplication.isSellerLogin) {
 			seller = data.getBooleanExtra(Constants.SELLER, true);
+			Bundle bundle = new Bundle();
+			bundle.putBoolean(Constants.COOPERATION, false);
+			myFragment.setArguments(bundle);
 			cvp_main_group.setCurrentItem(Constants.MY_PAGER, false);
 		}
 	}

@@ -88,6 +88,7 @@ public class Constants {
 	public static final String LEFT_FRAGMENT_NAME = "LeftMenuFragment"; //左边菜单栏fragment
 
 	public static final String SELLER = "seller"; //商人
+	public static final String COOPERATION = "cooperation"; //是否合租
 	
 	public static final int GO_LOGIN_REQUESTCODE = 00; //主界面跳转到登陆界面的请求code
 	public static final int LOGIN_RETURN_RESULTCODE = 10;  //登陆返回信息

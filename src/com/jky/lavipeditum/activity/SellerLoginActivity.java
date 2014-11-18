@@ -110,5 +110,16 @@ public class SellerLoginActivity extends BaseActivity implements OnClickListener
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		//关闭弹出的dialog
+		if (setAlertDialogs != null) {
+			for (PopupWindow p : setAlertDialogs) {
+				p.dismiss();
+			}
+		}
+	}
 
 }

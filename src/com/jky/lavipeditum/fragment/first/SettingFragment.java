@@ -1,4 +1,4 @@
-package com.jky.lavipeditum.fragment;
+package com.jky.lavipeditum.fragment.first;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.jky.lavipeditum.base.BaseFragment;
 public class SettingFragment extends BaseFragment {
 
 	@Override
-	protected View initView(LayoutInflater inflater) {
+	protected View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		TextView tv = new TextView(getActivity());
 		tv.setText(SettingFragment.class.getSimpleName());
 		return tv;

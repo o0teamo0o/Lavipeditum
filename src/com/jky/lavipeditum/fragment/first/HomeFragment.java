@@ -1,4 +1,4 @@
-package com.jky.lavipeditum.fragment;
+package com.jky.lavipeditum.fragment.first;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.bean.CitySortModel;
 import com.jky.lavipeditum.bean.Region;
 import com.jky.lavipeditum.engine.RegionInfoService;
+import com.jky.lavipeditum.fragment.MainFragment;
 import com.jky.lavipeditum.lib.auto_scroll_view_pager.AutoScrollViewPager;
 import com.jky.lavipeditum.lib.viewpager_Indicator.CirclePageIndicator;
 import com.jky.lavipeditum.util.Constants;
@@ -60,7 +61,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 	private TextView tv_city_change;
 
 	@Override
-	public View initView(LayoutInflater inflater) {
+	public View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.home_fragment, null);
 		
 		lv_left_menu = (ImageView) view.findViewById(R.id.lv_left_menu);
