@@ -2,30 +2,31 @@ package com.jky.lavipeditum.adapter;
 
 import java.util.ArrayList;
 
+import com.jky.lavipeditum.R;
+import com.jky.lavipeditum.bean.Region;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-
-import com.jky.lavipeditum.R;
-import com.jky.lavipeditum.bean.Region;
+import android.widget.TextView;
 
 /**
  * 
- * @ClassName: RegionGridViewPager 
- * @Description: 城市地区的适配器
+ * @ClassName: RegionListViewAdapter 
+ * @Description: 地区适配器
 
  * @author o0teamo0o
- * @date 2014年11月14日 上午12:11:17 
+ * @date 2014年11月18日 下午11:20:53 
  *
  */
-public class RegionAdapter extends BaseAdapter {
+public class RegionListViewAdapter extends BaseAdapter {
 	
-	private ArrayList<Region> regions;
 	private Context context;
+	private ArrayList<Region> regions;
 	
-	public RegionAdapter(Context context, ArrayList<Region> regions) {
+	public RegionListViewAdapter(Context context, ArrayList<Region> regions) {
 		this.context = context;
 		this.regions = regions;
 	}
@@ -50,20 +51,20 @@ public class RegionAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
-			convertView = View.inflate(context, R.layout.home_fragment_ctiy_item, null);
-			holder.bt_zone = (Button) convertView.findViewById(R.id.bt_zone);
+			convertView = View.inflate(context, R.layout.region_register_three_pager_popup_item, null);
+			holder.tv_zone = (TextView) convertView.findViewById(R.id.tv_zone);
+			
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		holder.bt_zone.setText(regions.get(position).getName());
+		holder.tv_zone.setText(regions.get(position).getName());
 		
 		return convertView;
 	}
-	
-	public class ViewHolder{
-		Button bt_zone;
-	}
 
+	public class ViewHolder{
+		TextView tv_zone;
+	}
 }

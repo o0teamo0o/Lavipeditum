@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.activity.LocationCityActivity;
-import com.jky.lavipeditum.adapter.RegionAdapter;
+import com.jky.lavipeditum.adapter.RegionGridViewAdapter;
 import com.jky.lavipeditum.adapter.TitleAdAdapter;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.bean.CitySortModel;
@@ -109,7 +109,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener, OnChe
 				if (regions != null) {
 					Logger.d(HomeFragment.class, "集合大小:"+regions.size());
 					//设置数据
-					RegionAdapter adapter = new RegionAdapter(getActivity(), regions);
+					RegionGridViewAdapter adapter = new RegionGridViewAdapter(getActivity(), regions);
 					gv_region.setAdapter(adapter);
 					gv_region.setVisibility(View.VISIBLE);
 				}

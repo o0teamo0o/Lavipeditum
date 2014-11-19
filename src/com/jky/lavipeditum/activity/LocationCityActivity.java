@@ -55,6 +55,7 @@ public class LocationCityActivity extends BaseActivity implements OnTouchingLett
 	private SideBar sideBar;
 	private TextView dialog, tv_error;
 	private List<CitySortModel> sourceDateList;
+	private LocationCityAdapter adapter;
 
 	@Override
 	protected void initView(Bundle savedInstanceState) {
@@ -134,7 +135,6 @@ public class LocationCityActivity extends BaseActivity implements OnTouchingLett
 			}
 		};
 	};
-	private LocationCityAdapter adapter;
 	
 	/**
 	 * 

@@ -81,11 +81,20 @@ public class Constants {
 	};
 	
 	/*****************************Share_SDK短信常量结束*****************************/
+	
+	/*******************************百度地图相关资料开始******************************/
+	
+	public static final String BAIDU_API_KEY = "xHU0t7Ge8pcitv9KqTLfDX42";
+	
+	/*******************************百度地图相关资料结束******************************/
 
 	public static final String PREFERENCES_NAME = "LavipeditumPreferences"; //共享首选项文件名字
 	
 	public static final String MAIN_FRAGMENT_NAME = "MainFragment"; //主界面fragment
 	public static final String LEFT_FRAGMENT_NAME = "LeftMenuFragment"; //左边菜单栏fragment
+	public static final int SELLERREGISTERFIRSTFRAGMENT = 0; //商家注册第一个界面
+	public static final int SELLERREGISTERSECONDFRAGMENT = 1; //商家注册第二个界面
+	public static final int SELLERREGISTERTHREEFRAGMENT = 2; //商家注册第三个界面
 
 	public static final String SELLER = "seller"; //商人
 	public static final String COOPERATION = "cooperation"; //是否合租
@@ -101,6 +110,8 @@ public class Constants {
 	public static final int GO_SELLER_LOGIN_REQUESTCODE = 13; //跳转到商家登陆界面
 	public static final int SELLER_LOGIN_BACK_REQUESTCODE = 03; //商家登陆界面返回值
 	public static final int SELLER_LOGIN_SUCCESS = 103; //商家登陆成功的返回值
+	public static final int GO_BAIDUMAP_ADD_MARKER_REQUESTCODE = 04; //商家注册信息跳转到百度地图上去标注
+	public static final int BAIDUMAP_BACK_RESULTCODE = 14; //百度地图返回商家注册界面的code
 	
 	//主界面的四个页面
 	public static final int HOME_PAGER = 3; //主页

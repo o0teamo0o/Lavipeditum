@@ -3,13 +3,14 @@
     xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadingEdge="none"
+    android:scrollbars="none"
     android:orientation="vertical" >
  
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical" >
 
@@ -35,7 +36,7 @@
                 android:orientation="horizontal" >
 
                 <com.jky.lavipeditum.custom_view.ClearEditText
-                    android:id="@+id/cet_username"
+                    android:id="@+id/cet_shop_name"
                     android:layout_width="@dimen/login_editview_width"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -44,7 +45,7 @@
                     android:layout_marginEnd="10dip"
                     android:layout_marginRight="10dip"
                     android:background="@null"
-                    android:hint="@string/username_hint"
+                    android:hint="店面的门头名称"
                     android:inputType="text"
                     android:lines="1"
                     android:singleLine="true"
@@ -54,8 +55,8 @@
                 <ImageView
                     android:id="@+id/iv_line"
                     style="@style/login_editview"
-                    android:layout_toLeftOf="@id/cet_username"
-                    android:layout_toStartOf="@id/cet_username"
+                    android:layout_toLeftOf="@id/cet_shop_name"
+                    android:layout_toStartOf="@id/cet_shop_name"
                     android:contentDescription="@null"
                     android:src="@drawable/wb_infolist_tab_divider_small_version" />
 
@@ -82,7 +83,7 @@
                 android:orientation="horizontal" >
 
                 <com.jky.lavipeditum.custom_view.ClearEditText
-                    android:id="@+id/cet_pwd"
+                    android:id="@+id/cet_phone"
                     android:layout_width="@dimen/login_editview_width"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -91,8 +92,8 @@
                     android:layout_marginEnd="10dip"
                     android:layout_marginRight="10dip"
                     android:background="@null"
-                    android:hint="@string/password_hint"
-                    android:inputType="textPassword"
+                    android:hint="门店预约或者前台电话"
+                    android:inputType="phone"
                     android:lines="1"
                     android:singleLine="true"
                     android:textColor="@color/main_color"
@@ -101,8 +102,8 @@
                 <ImageView
                     android:id="@+id/iv_psw_line"
                     style="@style/login_editview"
-                    android:layout_toLeftOf="@id/cet_pwd"
-                    android:layout_toStartOf="@id/cet_pwd"
+                    android:layout_toLeftOf="@id/cet_phone"
+                    android:layout_toStartOf="@id/cet_phone"
                     android:contentDescription="@null"
                     android:src="@drawable/wb_infolist_tab_divider_small_version" />
 
@@ -124,11 +125,14 @@
             android:text="门店详细地址："
             android:textColor="@color/main_color" />
 
-        <EditText
+        <com.jky.lavipeditum.custom_view.ClearEditText
+            android:id="@+id/cet_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/comment_dialog_cancel_normal"
             android:gravity="left|top"
+            android:hint="向消费者展示正确的接待地址信息"
+            android:textSize="16sp"
             android:lines="2" />
 
         <TextView
@@ -139,18 +143,22 @@
             android:text="店铺信息描述："
             android:textColor="@color/main_color" />
 
-        <EditText
+        <com.jky.lavipeditum.custom_view.ClearEditText
+            android:id="@+id/cet_detailed_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="商家介绍:例如营业面积、本店特色等\n套餐/产品:\n是否有营业执照/其它证书:\n人均消费:\n其他介绍:"
             android:background="@drawable/comment_dialog_cancel_normal"
             android:gravity="left|top"
+            android:textSize="16sp"
             android:lines="5" />
 
         <com.jky.lavipeditum.custom_view.BootstrapButton
+            android:id="@+id/bb_next"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="80dp"
             android:layout_marginTop="20dp"
             android:text="下一步"
             android:textSize="16sp"

@@ -1,5 +1,6 @@
 package com.jky.lavipeditum;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -30,6 +31,8 @@ public class LavipeditumApplication extends Application {
 		super.onCreate();
 		
 		initImageLoader(getApplicationContext());
+		
+		initBaiduMap();
 	}
 
 	/**
@@ -49,6 +52,16 @@ public class LavipeditumApplication extends Application {
 		.build();
 		
 		ImageLoader.getInstance().init(config);
+	}
+	
+	/**
+	 * 
+	 * Title: initBaiduMap
+	 * Description: 初始化百度地图
+	 */
+	private void initBaiduMap() {
+		// 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+		SDKInitializer.initialize(this);
 	}
 
 }

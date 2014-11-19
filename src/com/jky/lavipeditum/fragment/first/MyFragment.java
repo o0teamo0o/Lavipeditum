@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.jky.lavipeditum.LavipeditumApplication;
 import com.jky.lavipeditum.R;
@@ -27,12 +29,13 @@ import com.jky.lavipeditum.util.Constants;
  * @date 2014年10月24日 下午3:58:17 
  *
  */
-public class MyFragment extends BaseFragment {
+public class MyFragment extends BaseFragment implements OnCheckedChangeListener {
 	
 	private View view;
 	private DirectionalViewPager dvp_register_pager;
 	private boolean cooperation;
-
+	private RadioGroup rg_title_group;
+	
 	@Override
 	protected View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		if (LavipeditumApplication.isLogin) {
@@ -44,6 +47,7 @@ public class MyFragment extends BaseFragment {
 			View ly_register = view.findViewById(R.id.ly_register);
 			View ly_seller = view.findViewById(R.id.ly_seller);
 			dvp_register_pager = (DirectionalViewPager) view.findViewById(R.id.dvp_register_pager);
+			rg_title_group = (RadioGroup) view.findViewById(R.id.rg_title_group);
 			
 			try {
 				cooperation = getArguments().getBoolean(Constants.COOPERATION);
@@ -59,6 +63,8 @@ public class MyFragment extends BaseFragment {
 			}
 			
 			initRegisterData();
+			
+			initRegisterListener();
 		}
 		return view;
 	}
@@ -87,6 +93,15 @@ public class MyFragment extends BaseFragment {
 	
 	/**
 	 * 
+	 * Title: initRegisterListener
+	 * Description: 初始化注册商家监听
+	 */
+	private void initRegisterListener() {
+		rg_title_group.setOnCheckedChangeListener(this);
+	}
+	
+	/**
+	 * 
 	 * Title: initRegisterPager
 	 * Description: 初始化注册商家的页面信息
 	 */
@@ -102,6 +117,24 @@ public class MyFragment extends BaseFragment {
 		fragments.add(threeFragment);
 		
 		return fragments;
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		switch (checkedId) {
+		//基本信息
+		case R.id.rb_firsh:
+			dvp_register_pager.setCurrentItem(Constants.SELLERREGISTERFIRSTFRAGMENT, false);
+			break;
+		//店铺信息
+		case R.id.rb_second:
+			dvp_register_pager.setCurrentItem(Constants.SELLERREGISTERSECONDFRAGMENT, false);
+			break;
+		//详情介绍
+		case R.id.rb_three:
+			dvp_register_pager.setCurrentItem(Constants.SELLERREGISTERTHREEFRAGMENT, false);
+			break;
+		}
 	}
 
 }

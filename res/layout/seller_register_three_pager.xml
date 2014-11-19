@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:scrollbars="none"
+    android:focusable="true"
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dip"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical" >
 
         <TextView
@@ -22,6 +25,7 @@
             android:layout_height="wrap_content" >
 
             <CheckBox
+                android:id="@+id/cb_city"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -31,13 +35,18 @@
                 android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
                 android:gravity="center"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="城市" />
 
+            <View
+                android:layout_width="0.2dp"
+                android:layout_height="match_parent"
+                android:background="#AFAEAE" />
+
             <CheckBox
+                android:id="@+id/cb_region"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/region_bg_selector"
                 android:button="@null"
@@ -45,9 +54,16 @@
                 android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
                 android:gravity="center"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="区域" />
 
+            <View
+                android:layout_width="0.2dp"
+                android:layout_height="match_parent"
+                android:background="#AFAEAE" />
+
             <CheckBox
+                android:id="@+id/cb_street"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -57,8 +73,38 @@
                 android:drawableRight="@drawable/abc_spinner_ab_default_holo_light"
                 android:gravity="center"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="商圈" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_makrer_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15sp"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/marker_map_selector"
+            android:text="在地图上标注"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/map_default" />
+
+        <com.jky.lavipeditum.custom_view.BootstrapButton
+            android:id="@+id/bb_next"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="80dp"
+            android:layout_marginTop="20dp"
+            android:text="下一步"
+            android:textSize="16sp"
+            bootstrapbutton:bb_roundedCorners="true"
+            bootstrapbutton:bb_size="default"
+            bootstrapbutton:bb_text_gravity="center"
+            bootstrapbutton:bb_type="primary" />
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

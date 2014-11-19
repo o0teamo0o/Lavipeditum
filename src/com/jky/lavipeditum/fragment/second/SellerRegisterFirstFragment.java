@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 
 import com.jky.lavipeditum.R;
 import com.jky.lavipeditum.base.BaseFragment;
 import com.jky.lavipeditum.custom_view.BootstrapButton;
 import com.jky.lavipeditum.custom_view.ClearEditText;
 import com.jky.lavipeditum.custom_view.DirectionalViewPager;
+import com.jky.lavipeditum.util.Constants;
 import com.jky.lavipeditum.util.EmailValidator;
 import com.jky.lavipeditum.util.PhoneValidator;
 
@@ -33,10 +35,13 @@ public class SellerRegisterFirstFragment extends BaseFragment implements OnClick
 	private BootstrapButton bb_next;
 	private List<PopupWindow> setAlertDialogs;
 	private DirectionalViewPager dvp_register_pager;
+	private View parentView;
 
 	@Override
 	protected View initView(LayoutInflater inflater, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.seller_register_one_pager, null);
+		//父fragment
+		parentView = getParentFragment().getView();
 		
 		cet_username = (ClearEditText) view.findViewById(R.id.cet_username);
 		cet_phone = (ClearEditText) view.findViewById(R.id.cet_phone);
@@ -99,8 +104,12 @@ public class SellerRegisterFirstFragment extends BaseFragment implements OnClick
 			}
 			
 			//都填写正确之后 因为切换页面
-			dvp_register_pager = (DirectionalViewPager) getParentFragment().getView().findViewById(R.id.dvp_register_pager);
-			dvp_register_pager.setCurrentItem(1, false);
+			dvp_register_pager = (DirectionalViewPager) parentView.findViewById(R.id.dvp_register_pager);
+			dvp_register_pager.setCurrentItem(Constants.SELLERREGISTERSECONDFRAGMENT, false);
+			//得到radiobutton
+			RadioButton rb_second = (RadioButton) parentView.findViewById(R.id.rb_second);
+			rb_second.setChecked(true);
+			
 			break;
 		}
 	}
@@ -117,5 +126,14 @@ public class SellerRegisterFirstFragment extends BaseFragment implements OnClick
 		view.requestFocus();
 		view.requestFocusFromTouch();
 	}
-
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		if (setAlertDialogs != null) {
+			for (PopupWindow p : setAlertDialogs) {
+				p.dismiss();
+			}
+		}
+	}
 }
