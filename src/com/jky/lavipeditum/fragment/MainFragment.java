@@ -29,7 +29,7 @@ import com.jky.lavipeditum.util.Logger;
 /**
  * 
  * @ClassName: MainFragment 
- * @Description: 主界面对Fragment
+ * @Description: 主界面的Fragment
  *
  * @author o0teamo0o
  * @date 2014年10月21日 下午10:20:24 

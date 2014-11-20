@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -20,10 +21,16 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -38,6 +45,7 @@ import com.jky.lavipeditum.base.BaseActivity;
 import com.jky.lavipeditum.bean.CurrentRegion;
 import com.jky.lavipeditum.bean.Region;
 import com.jky.lavipeditum.engine.RegionInfoService;
+import com.jky.lavipeditum.util.Logger;
 import com.jky.lavipeditum.util.ToastUtil;
 
 /**
@@ -49,7 +57,7 @@ import com.jky.lavipeditum.util.ToastUtil;
  * @date 2014年11月19日 下午9:09:15 
  *
  */
-public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCoderResultListener, OnClickListener, OnItemClickListener {
+public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCoderResultListener, OnClickListener, OnItemClickListener, OnMapClickListener {
 	
 	protected static final int QUERY_SUCCESS = 0;
 	private MapView bmapView;
@@ -63,6 +71,7 @@ public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCode
 	private GeoCoder geoCoder;
 	private EditText et_street;
 	private LinearLayout ll_max_zoom, ll_min_zoom, ll_location;
+	private LatLng currentPt; //当前点击的点 经纬度
 
 	@Override
 	protected void initView(Bundle savedInstanceState) {
@@ -119,6 +128,9 @@ public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCode
 		ll_min_zoom.setOnClickListener(this);
 		ll_location.setOnClickListener(this);
 		
+		//给百度地图添加点击监听
+		baiduMap.setOnMapClickListener(this);
+		
 		//注册监听
 		client.registerLocationListener(listener);
 	}
@@ -161,24 +173,6 @@ public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCode
 				.address(currentRegion.getRegion() + currentRegion.getStreen()));
 	};
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		bmapView.onResume();
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		bmapView.onResume();
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		bmapView.onDestroy();
-	}
-
 	/**
 	 * 
 	 * Title: onGetGeoCodeResult
@@ -354,6 +348,79 @@ public class AddMarkerToMapActivity extends BaseActivity implements OnGetGeoCode
 			baiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(latLng));
 		}
 		
+	}
+
+	/**
+	 * 
+	 * Title: onMapClick
+	 * Description:地图单击事件回调函数
+	 * @param point 点击的地理坐标
+	 */
+	@Override
+	public void onMapClick(LatLng point) {
+		//先清空百度地图上的点 然后再添加
+		baiduMap.clear();
+		//得到当前点击的点
+		currentPt = point;
+		Logger.d(AddMarkerToMapActivity.class, "当前经纬度:"+currentPt.longitude +" "+ currentPt.latitude);
+		BitmapDescriptor currentDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_pin_merchant);
+		createMarker("", currentDescriptor, currentPt);
+	}
+	
+	/**
+	 * 
+	 * Title: onMapPoiClick
+	 * Description:地图内 Poi 单击事件回调函数 
+	 * @param poi 点击的 poi 信息
+	 * @return
+	 */
+	@Override
+	public boolean onMapPoiClick(MapPoi poi) {
+		return true;
+	}
+	
+	/**
+	 * 
+	 * Title: createMarker
+	 * Description: 创建marker覆盖物
+	 * @param title 标题
+	 * @param descriptor 图标
+	 * @param latLng 经纬度
+	 * @return 覆盖物
+	 */
+	private void createMarker(String title, BitmapDescriptor descriptor, LatLng latLng) {
+		MarkerOptions markerOptions = new MarkerOptions();
+		//设置 marker 覆盖物的标题
+		markerOptions.title(title);
+		//设置 Marker 覆盖物的图标，相同图案的 icon 的 marker 最好使用同一个 BitmapDescriptor 对象以节省内存空间。
+		markerOptions.icon(descriptor);
+		//设置 marker 覆盖物的位置坐标
+		markerOptions.position(latLng);
+		//设置 marker 覆盖物的可见性
+		markerOptions.visible(true);
+		//返回是具体marker对象
+		baiduMap.addOverlay(markerOptions);
+		
+		//弹出popupwindow 提示是否确定
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		bmapView.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		bmapView.onResume();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		bmapView.onDestroy();
 	}
 
 }
